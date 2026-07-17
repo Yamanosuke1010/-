@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>電脳チンチロリン -酒席最強・爆音版-</title>
+    <title>お茶碗チンチロ -ポップ＆カラカラ版-</title>
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #FFF8E1; /* 明るいクリーム色の背景 */
+            color: #4E342E; /* 優しいブラウンのテキスト */
+            font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Quicksand", sans-serif;
             text-align: center;
             margin: 0;
             padding: 15px;
@@ -18,151 +18,229 @@
             flex-direction: column;
             align-items: center;
         }
-        h1 { color: #ffcc00; font-size: 22px; margin: 5px 0 2px 0; }
-        .subtitle { font-size: 11px; color: #888; margin-bottom: 12px; }
-        .box { background: #222; padding: 14px; border-radius: 12px; margin-bottom: 15px; font-size: 14px; width: 100%; max-width: 480px; }
-        select, input, button {
-            font-size: 15px; padding: 6px 10px; background: #333; color: white;
-            border: 1px solid #555; border-radius: 6px; margin: 3px;
+        h1 { 
+            color: #FF7043; 
+            font-size: 24px; 
+            margin: 5px 0 2px 0; 
+            text-shadow: 2px 2px 0px #FFE0B2;
+            font-weight: 900;
         }
-        .name-input-group { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; text-align: left; }
-        .name-input-item { display: flex; align-items: center; justify-content: space-between; }
-        .name-input-item input { width: 65%; }
+        .subtitle { font-size: 12px; color: #8D6E63; margin-bottom: 15px; font-weight: bold; }
+        
+        .box { 
+            background: #FFFFFF; 
+            padding: 16px; 
+            border-radius: 20px; 
+            margin-bottom: 15px; 
+            font-size: 15px; 
+            width: 100%; 
+            max-width: 480px; 
+            box-shadow: 0 6px 15px rgba(255, 112, 67, 0.1);
+            border: 3px solid #FFE0B2;
+        }
+        
+        select, input, button {
+            font-size: 15px; 
+            padding: 8px 12px; 
+            background: #FFF; 
+            color: #4E342E;
+            border: 2px solid #FFCC80; 
+            border-radius: 10px; 
+            margin: 4px;
+            font-weight: bold;
+            outline: none;
+        }
+        input:focus { border-color: #FF7043; }
 
-        /* 大画面お椀・リアル3Dサイコロ表示エリア */
+        .name-input-group { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; text-align: left; }
+        .name-input-item { display: flex; align-items: center; justify-content: space-between; font-weight: bold; }
+        .name-input-item input { width: 60%; }
+
+        /* 🍵 ポップなお茶碗・リアル3Dサイコロ表示エリア */
         #bowl-container {
-            background: #1a1a1a;
-            border: 3px dashed #444;
-            border-radius: 16px;
+            background: #FFFFFF;
+            border: 4px dashed #FFCC80;
+            border-radius: 24px;
             padding: 15px;
             width: 100%;
             max-width: 480px;
             margin-bottom: 15px;
         }
-        #bowl-title { font-size: 14px; color: #ffcc00; font-weight: bold; margin-bottom: 15px; min-height: 20px; }
+        #bowl-title { font-size: 16px; color: #FF7043; font-weight: 900; margin-bottom: 15px; min-height: 24px; }
+        
         #main-bowl {
-            background: radial-gradient(circle, #ffffff 65%, #dcdcdc 100%);
-            border: 12px solid #8b4513;
+            /* 陶器のお茶碗風デザイン（外側は可愛いグリーン、中は白〜グレー） */
+            background: radial-gradient(circle, #FAFAFA 40%, #E0E0E0 90%, #BDBDBD 100%);
+            border: 14px solid #AED581; /* 抹茶カラーのフチ */
             border-radius: 50%;
-            width: 240px;
-            height: 240px;
+            width: 230px;
+            height: 230px;
             margin: 0 auto;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+            box-shadow: inset 0 8px 15px rgba(0,0,0,0.1), 0 10px 20px rgba(174, 213, 129, 0.4);
             perspective: 400px;
         }
         
         /* リアルCSS 3Dダイス構造 */
         .dice-3d {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             position: relative;
             transform-style: preserve-3d;
             transition: transform 0.5s ease-out;
         }
         .face {
             position: absolute;
-            width: 40px;
-            height: 40px;
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            width: 42px;
+            height: 42px;
+            background: #FFFAFA;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 28px;
+            font-size: 30px;
             font-weight: bold;
-            color: black;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+            color: #333;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
         }
-        .f1 { transform: rotateY(0deg) translateZ(20px); color: #d00; font-size: 34px; }
-        .f6 { transform: rotateY(180deg) translateZ(20px); }
-        .f2 { transform: rotateY(90deg) translateZ(20px); }
-        .f5 { transform: rotateY(-90deg) translateZ(20px); }
-        .f3 { transform: rotateX(90deg) translateZ(20px); }
-        .f4 { transform: rotateX(-90deg) translateZ(20px); }
+        .f1 { transform: rotateY(0deg) translateZ(21px); color: #FF5252; font-size: 38px; }
+        .f6 { transform: rotateY(180deg) translateZ(21px); }
+        .f2 { transform: rotateY(90deg) translateZ(21px); }
+        .f5 { transform: rotateY(-90deg) translateZ(21px); }
+        .f3 { transform: rotateX(90deg) translateZ(21px); }
+        .f4 { transform: rotateX(-90deg) translateZ(21px); }
 
         /* お椀の揺れ演出 */
         .shaking { animation: shake 0.1s infinite alternate; }
         @keyframes shake {
-            0% { transform: translate(5px, 3px); }
-            100% { transform: translate(-5px, -3px); }
+            0% { transform: translate(4px, 2px) rotate(2deg); }
+            100% { transform: translate(-4px, -2px) rotate(-2deg); }
         }
         
+        /* ポップで押したくなる3Dボタン */
         .btn-main {
-            background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);
-            border: none; color: #111; padding: 14px 0; width: 85%; max-width: 320px;
-            font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255,153,0,0.3); margin: 5px auto 10px auto;
-            display: block; -webkit-tap-highlight-color: transparent;
+            background: #FF7043;
+            color: #ffffff;
+            border: none; 
+            padding: 16px 0; 
+            width: 90%; 
+            max-width: 320px;
+            font-size: 18px; 
+            font-weight: 900; 
+            border-radius: 50px; 
+            cursor: pointer;
+            box-shadow: 0 6px 0 #D84315, 0 10px 15px rgba(216, 67, 21, 0.3); 
+            margin: 10px auto 15px auto;
+            display: block; 
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.1s, box-shadow 0.1s;
         }
-        .btn-main:disabled { background: #444; color: #888; box-shadow: none; cursor: not-allowed; }
-        .btn-nav { background: #444; color: #eee; font-size: 12px; padding: 6px 12px; border: none; border-radius: 6px; margin: 5px; }
+        .btn-main:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #D84315, 0 4px 5px rgba(216, 67, 21, 0.3);
+        }
+        .btn-main:disabled { 
+            background: #E0E0E0; 
+            color: #9E9E9E; 
+            box-shadow: 0 6px 0 #BDBDBD; 
+            cursor: not-allowed; 
+        }
+        
+        .btn-nav { background: #81D4FA; color: #01579B; font-weight: bold; font-size: 13px; padding: 8px 16px; border: none; border-radius: 20px; margin: 5px; box-shadow: 0 3px 0 #29B6F6; }
+        .btn-nav:active { transform: translateY(3px); box-shadow: 0 0 0 #29B6F6; }
 
         /* プレイヤーカード一覧 */
         .player-list { width: 100%; max-width: 480px; }
         .p-card {
-            background: #2a2a2a; padding: 12px; border-radius: 12px; margin: 8px 0;
-            border-left: 5px solid #555; text-align: left; display: flex; justify-content: space-between; align-items: center;
+            background: #FFFFFF; 
+            padding: 14px; 
+            border-radius: 16px; 
+            margin: 10px 0;
+            border: 2px solid #EEEEEE;
+            border-left: 6px solid #BDBDBD; 
+            text-align: left; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-        .p-card.current-roller { border-left: 5px solid #ffcc00; background: #333322; box-shadow: 0 0 8px rgba(255,204,0,0.3); }
-        .p-card.win { border-left: 5px solid #28a745; background: #223326; }
-        .p-card.lose { border-left: 5px solid #dc3545; background: #332222; }
+        .p-card.current-roller { border-left: 6px solid #FFCA28; background: #FFFDE7; border-color: #FFE082; box-shadow: 0 4px 10px rgba(255, 202, 40, 0.3); }
+        .p-card.win { border-left: 6px solid #66BB6A; background: #E8F5E9; border-color: #A5D6A7; }
+        .p-card.lose { border-left: 6px solid #EF5350; background: #FFEBEE; border-color: #EF9A9A; }
         
         .p-info { flex: 1; }
-        .p-name { font-weight: bold; font-size: 15px; color: #fff; display: flex; align-items: center; gap: 5px; }
-        .p-money { font-size: 12px; color: #ccc; margin-top: 2px; }
-        .p-status { font-size: 14px; font-weight: bold; color: #ff3366; margin-top: 2px; }
+        .p-name { font-weight: 900; font-size: 16px; color: #4E342E; display: flex; align-items: center; gap: 6px; }
+        .p-money { font-size: 13px; color: #795548; margin-top: 4px; font-weight: bold; }
+        .p-status { font-size: 14px; font-weight: 900; color: #FF7043; margin-top: 4px; }
         
-        /* 結果一覧のリアルなドットサイコロのスタイル */
+        /* 結果一覧の可愛いドットサイコロ */
         .p-dice-preview {
             display: flex;
-            gap: 5px;
+            gap: 6px;
             align-items: center;
             justify-content: center;
-            background: #1a1a1a;
-            padding: 6px 8px;
-            border-radius: 8px;
+            background: #FFF3E0;
+            padding: 8px 10px;
+            border-radius: 12px;
             min-width: 100px;
+            border: 2px solid #FFE0B2;
         }
         .mini-die-plate {
             width: 24px;
             height: 24px;
             background: #ffffff;
-            border-radius: 4px;
+            border-radius: 5px;
             position: relative;
-            box-shadow: 1px 2px 3px rgba(0,0,0,0.6);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            border: 1px solid #E0E0E0;
         }
-        .dot { position: absolute; width: 4px; height: 4px; background: #000000; border-radius: 50%; }
-        .dot-center-red { position: absolute; width: 8px; height: 8px; background: #d00000; border-radius: 50%; top: 8px; left: 8px; }
+        .dot { position: absolute; width: 4px; height: 4px; background: #4E342E; border-radius: 50%; }
+        .dot-center-red { position: absolute; width: 8px; height: 8px; background: #FF5252; border-radius: 50%; top: 7px; left: 7px; }
         .top-left     { top: 4px; left: 4px; }
         .top-right    { top: 4px; right: 4px; }
-        .mid-left     { top: 10px; left: 4px; }
-        .center       { top: 10px; left: 10px; }
-        .mid-right    { top: 10px; right: 4px; }
+        .mid-left     { top: 9px; left: 4px; }
+        .center       { top: 9px; left: 9px; }
+        .mid-right    { top: 9px; right: 4px; }
         .bottom-left  { bottom: 4px; left: 4px; }
         .bottom-right { bottom: 4px; right: 4px; }
 
-        .mini-die-empty { color: #666; font-size: 12px; letter-spacing: 1px; }
-        .badge { font-size: 10px; padding: 2px 5px; border-radius: 4px; font-weight: bold; }
-        .badge.win-badge { background: #28a745; color: white; }
-        .badge.lose-badge { background: #dc3545; color: white; }
+        .mini-die-empty { color: #BCAAA4; font-size: 13px; font-weight: bold; letter-spacing: 1px; }
+        .badge { font-size: 11px; padding: 3px 6px; border-radius: 6px; font-weight: 900; }
+        .badge.win-badge { background: #66BB6A; color: white; }
+        .badge.lose-badge { background: #EF5350; color: white; }
         
         /* アコーディオンログ */
-        .accordion-btn { background: #222; border: none; color: #ffcc00; width: 100%; padding: 8px; font-size: 13px; font-weight: bold; cursor: pointer; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
-        .log-box { font-size: 12px; color: #aaa; max-height: 120px; overflow-y: auto; text-align: left; padding: 8px; background: #1a1a1a; border-radius: 0 0 6px 6px; display: none; border-top: 1px solid #333; }
+        .accordion-btn { 
+            background: #FFE0B2; 
+            border: none; 
+            color: #D84315; 
+            width: 100%; 
+            padding: 12px; 
+            font-size: 14px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            border-radius: 12px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .log-box { font-size: 13px; color: #5D4037; font-weight: bold; max-height: 150px; overflow-y: auto; text-align: left; padding: 12px; background: #FFF; border-radius: 0 0 12px 12px; display: none; border-top: 2px dashed #FFE0B2; line-height: 1.5; }
     </style>
 </head>
 <body>
 
-    <h1>🎲 電脳チンチロリン -酒席最強・爆音版-</h1>
+    <h1>🍵 お茶碗チンチロ 🎲</h1>
     <div class="subtitle">Presented by Syunki.Jr</div>
 
     <!-- 設定エリア -->
     <div id="setup-area" class="box">
+        <div style="font-weight: 900; color: #FF7043; margin-bottom: 10px; font-size:16px;">
+            🍻 参加人数をえらんでね！
+        </div>
         <div>
             参加人数:
             <select id="player-num" onchange="generateNameInputs()">
@@ -170,24 +248,24 @@
             </select>
         </div>
         <div class="name-input-group" id="name-inputs-container"></div>
-        <button onclick="initGame()" style="background: linear-gradient(135deg, #ffcc00, #ff9900); color:black; font-weight:bold; width:100%; margin-top:10px;">ゲーム開始</button>
-        <button onclick="resetData()" style="background:#555; font-size:11px; width:100%; margin-top:5px;">全データを初期化</button>
+        <button onclick="initGame()" class="btn-main" style="width:100%; margin-top:15px;">ゲームをはじめる！</button>
+        <button onclick="resetData()" style="background:#EEEEEE; color:#757575; border:none; box-shadow:0 3px 0 #BDBDBD; font-size:12px; width:100%; margin-top:10px; border-radius:20px;">これまでの飲酒量をリセット</button>
     </div>
 
-    <!-- ナビゲーションエリア（プレイ中のみ表示） -->
+    <!-- ナビゲーションエリア -->
     <div id="nav-area" style="display:none; width:100%; max-width:480px; text-align:right;">
-        <button class="btn-nav" onclick="confirmGoToTop()">🏠 トップ画面に戻る</button>
+        <button class="btn-nav" onclick="confirmGoToTop()">🏠 もどる</button>
     </div>
 
     <!-- ステータス・BETエリア -->
     <div id="game-status" class="box" style="display:none;">
-        <span id="round-title" style="font-weight:bold; color:#ffcc00;"></span>
-        <div id="bet-inputs" style="margin-top: 8px;"></div>
+        <span id="round-title" style="font-weight:900; color:#FF7043; font-size:16px;"></span>
+        <div id="bet-inputs" style="margin-top: 10px; font-weight:bold;"></div>
     </div>
 
-    <!-- 大画面サイコロお椀エリア -->
+    <!-- 大画面お茶碗サイコロエリア -->
     <div id="bowl-container" style="display:none;">
-        <div id="bowl-title">勝負開始ボタンを押してください</div>
+        <div id="bowl-title">準備ができたら振ってね！</div>
         <div id="main-bowl">
             <div class="dice-3d" id="d3d1">
                 <div class="face f1">・</div><div class="face f6">⚅</div><div class="face f2">⚁</div><div class="face f5">⚄</div><div class="face f3">⚂</div><div class="face f4">⚃</div>
@@ -208,9 +286,9 @@
     <div class="player-list" id="players-display"></div>
 
     <!-- 可変ログエリア -->
-    <div class="box" id="log-area" style="display:none; padding:0;">
+    <div class="box" id="log-area" style="display:none; padding:0; border:none; box-shadow:none;">
         <button class="accordion-btn" onclick="toggleLog()">
-            <span>📜 勝負の足跡 (タップで開閉)</span>
+            <span>📜 勝負のきろく (タップでひらく)</span>
             <span id="accordion-arrow">▼</span>
         </button>
         <div id="logs" class="log-box"></div>
@@ -230,10 +308,8 @@
         let isRolling = false;
         let logOpen = false;
 
-        // Web Audio APIコンテキスト
         let audioCtx = null;
 
-        // 🛠 強化：iOSのロックを最速で解除するためのオーディオ初期化
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -243,53 +319,55 @@
             }
         }
 
-        // 画面のどこかを初めてタップした瞬間に音を鳴らせるようにする（iOS制限対策）
         window.addEventListener('click', initAudio, { once: true });
         window.addEventListener('touchstart', initAudio, { once: true });
 
-        // 🎲 サイコロのカタカタ音
+        // 🍵 お茶碗の中で「カラカラッ！」と鳴る高音のサウンド
         function playDiceSound() {
             if (!audioCtx) return;
             try {
                 initAudio();
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(150 + Math.random() * 600, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.05);
-                
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-                
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.06);
+                // 陶器とプラスチックが当たるような軽い音を短く2回鳴らして「カラカラ感」を出す
+                for(let i=0; i<2; i++) {
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    
+                    osc.type = 'sine'; // 陶器のような澄んだ音
+                    osc.frequency.setValueAtTime(1200 + Math.random() * 800, audioCtx.currentTime + (i*0.03));
+                    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + (i*0.03) + 0.03);
+                    
+                    gain.gain.setValueAtTime(0.5, audioCtx.currentTime + (i*0.03));
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + (i*0.03) + 0.03);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + (i*0.03));
+                    osc.stop(audioCtx.currentTime + (i*0.03) + 0.04);
+                }
             } catch(e) {}
         }
 
-        // 🎉 勝者確定時のファンファーレ音
+        // 🎉 ポップなファンファーレ
         function playFanfareBGM() {
             if (!audioCtx) return;
             try {
                 initAudio();
                 let now = audioCtx.currentTime;
-                let notes = [523.25, 659.25, 783.99, 1046.50]; // ド・ミ・ソ・ド
+                let notes = [523.25, 659.25, 783.99, 1046.50];
                 notes.forEach((freq, index) => {
                     let osc = audioCtx.createOscillator();
                     let gain = audioCtx.createGain();
                     
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, now + (index * 0.1));
+                    osc.frequency.setValueAtTime(freq, now + (index * 0.12));
                     
-                    gain.gain.setValueAtTime(0.2, now + (index * 0.1));
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6 + (index * 0.1));
+                    gain.gain.setValueAtTime(0.3, now + (index * 0.12));
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6 + (index * 0.12));
                     
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
-                    osc.start(now + (index * 0.1));
-                    osc.stop(now + 0.7 + (index * 0.1));
+                    osc.start(now + (index * 0.12));
+                    osc.stop(now + 0.7 + (index * 0.12));
                 });
             } catch(e) {}
         }
@@ -303,7 +381,7 @@
             for(let i = 1; i <= n; i++) {
                 html += `
                     <div class="name-input-item">
-                        <span>プレイヤー ${i} の名前:</span>
+                        <span>プレイヤー ${i} のなまえ:</span>
                         <input type="text" id="pname-${i}" value="プレイヤー ${i}" maxlength="8">
                     </div>`;
             }
@@ -317,7 +395,7 @@
             
             for (let i = 1; i <= numPlayers; i++) {
                 let inputName = document.getElementById(`pname-${i}`).value.trim() || `プレイヤー ${i}`;
-                let savedMoney = localStorage.getItem(`chinchiro_sake_custom_p_${inputName}`);
+                let savedMoney = localStorage.getItem(`chinchiro_pop_p_${inputName}`);
                 players.push({
                     id: i,
                     name: inputName,
@@ -336,24 +414,24 @@
             document.getElementById('action-btn').style.display = 'block';
             document.getElementById('log-area').style.display = 'block';
             
-            addLog("🍻 カスタム配当精算チンチロリン勝負が始まりました！");
+            addLog("🎊 お茶碗チンチロがはじまったよ！");
             startBetting();
         }
 
         function saveMoney() {
-            players.forEach(p => localStorage.setItem(`chinchiro_sake_custom_p_${p.name}`, p.money));
+            players.forEach(p => localStorage.setItem(`chinchiro_pop_p_${p.name}`, p.money));
         }
 
         function resetData() {
-            if(confirm("全員の総飲酒杯数を0杯にリセットしますか？")) {
+            if(confirm("みんなの飲んだ量を「0杯」にリセットする？")) {
                 localStorage.clear();
-                alert("リセットしました。");
+                alert("リセットしたよ！");
                 location.reload();
             }
         }
 
         function confirmGoToTop() {
-            if(confirm("トップ画面に戻りますか？\n(現在の勝負データは破棄されます)")) {
+            if(confirm("最初の画面にもどる？\n(いまの勝負はリセットされます)")) {
                 location.reload();
             }
         }
@@ -395,12 +473,12 @@
 
         function startBetting() {
             gameState = "BETTING";
-            document.getElementById('round-title').innerText = `💰 基本の賭け杯数設定`;
-            document.getElementById('bowl-title').innerText = "この勝負のベースとなる賭け杯数を決めてください";
-            document.getElementById('action-btn').innerText = "杯数を確定して勝負開始";
+            document.getElementById('round-title').innerText = `💰 ベットする杯数をきめてね`;
+            document.getElementById('bowl-title').innerText = "この勝負のベースになる杯数を入力してね！";
+            document.getElementById('action-btn').innerText = "杯数をきめて勝負スタート！";
             
             document.getElementById('bet-inputs').innerHTML = `
-                <span>この勝負の賭け金: </span>
+                <span>この勝負のかけ金: </span>
                 <input type="number" id="global-bet-input" value="1" min="1" max="5" style="width:60px;"> 杯
             `;
             
@@ -413,7 +491,7 @@
             initAudio(); 
             let inputVal = +document.getElementById('global-bet-input').value;
             if(inputVal < 1) {
-                alert("賭け杯数は1杯以上を入力してください。");
+                alert("杯数は1杯以上にしてね！");
                 return;
             }
             globalBet = inputVal;
@@ -427,9 +505,9 @@
             gameState = "ROLLING_PLAYERS";
             let p = players[currentPlayerTurn];
             
-            document.getElementById('round-title').innerText = `🎲 ${p.name} の番`;
-            document.getElementById('bowl-title').innerText = `${p.name} の挑戦 (残り ${3 - p.rollCount} 回)`;
-            document.getElementById('action-btn').innerText = `お椀を振る！ (${p.rollCount + 1}回目)`;
+            document.getElementById('round-title').innerText = `🎲 ${p.name} のばんだよ！`;
+            document.getElementById('bowl-title').innerText = `${p.name} のちょうせん (のこり ${3 - p.rollCount} 回)`;
+            document.getElementById('action-btn').innerText = `お茶碗を振る！ (${p.rollCount + 1}回目)`;
             
             renderPlayers();
         }
@@ -457,11 +535,11 @@
                     updateMainBowl3D(d, false);
                     
                     if (p.role.t !== "役なし" || p.rollCount >= 3) {
-                        addLog(`${p.name}: ${p.rollCount}回目に [ ${d.join(' ')} ] で【${p.role.t}】確定`);
+                        addLog(`✨ ${p.name}: ${p.rollCount}回目で【${p.role.t}】になったよ！`);
                         moveToNextPlayer();
                     } else {
-                        document.getElementById('bowl-title').innerText = `役なし！もう一振り！ (残り ${3 - p.rollCount} 回)`;
-                        document.getElementById('action-btn').innerText = `もう一度振る (${p.rollCount + 1}回目)`;
+                        document.getElementById('bowl-title').innerText = `役なし！もういっかい！ (のこり ${3 - p.rollCount} 回)`;
+                        document.getElementById('action-btn').innerText = `もう１回振る！ (${p.rollCount + 1}回目)`;
                         document.getElementById('action-btn').disabled = false;
                         isRolling = false;
                         renderPlayers();
@@ -488,7 +566,8 @@
         }
 
         function calcPayout() {
-            document.getElementById('round-title').innerText = "🏆 結果発表とお酒の総精算";
+            document.getElementById('round-title').innerText = "🏆 けっかはっぴょう！";
+            document.getElementById('action-btn').innerText = "つぎの勝負へいく！";
             
             let maxScore = -Infinity;
             let minScore = Infinity;
@@ -512,21 +591,20 @@
                 }
             });
 
-            let logMsg = `【カスタム精算結果】<br>`;
+            let logMsg = `<hr style="border:1px dashed #FFCC80;"><span style="color:#FF7043; font-size:14px;">🎯 精算けっか</span><br>`;
 
             if (isDrawAll) {
-                logMsg += `全員同じ強さの役のため引き分け！誰もいません。🍻<br>`;
-                document.getElementById('bowl-title').innerText = `全員引き分け！`;
+                logMsg += `みんな同じ強さだから、引き分け！平和だね🕊️<br>`;
+                document.getElementById('bowl-title').innerText = `みんな引き分け！`;
             } else {
                 playFanfareBGM(); 
                 
                 let winnerNames = winners.map(w => w.name).join(", ");
                 let loserNames = losers.map(l => l.name).join(", ");
-                document.getElementById('bowl-title').innerText = `勝者: ${winnerNames} / 敗者: ${loserNames}`;
+                document.getElementById('bowl-title').innerText = `👑 勝者: ${winnerNames} / 💀 敗者: ${loserNames}`;
 
-                logMsg += `🎉 トップ勝者：<b>${winnerNames}</b><br>`;
-                logMsg += `💀 最下位：<b>${loserNames}</b><br><br>`;
-                logMsg += `⚙️ <b>精算内訳:</b><br>`;
+                logMsg += `🎉 勝った人：<b>${winnerNames}</b><br>`;
+                logMsg += `💀 負けた人：<b>${loserNames}</b><br><br>`;
 
                 let winnerBaseMultiplier = 0;
                 let hasValidWinnerRole = false;
@@ -534,27 +612,27 @@
                 players.forEach(p => {
                     if (p.role.r >= 90) {
                         winnerBaseMultiplier += p.role.mult;
-                        logMsg += `・${p.name} の役: ${p.role.t} ➡️ <b>+${p.role.mult}倍</b> 加算<br>`;
+                        logMsg += `🔸 ${p.name} の役: ${p.role.t} ➡️ <b>+${p.role.mult}倍</b><br>`;
                         hasValidWinnerRole = true;
                     }
                 });
 
                 if (!hasValidWinnerRole) {
                     winnerBaseMultiplier = 1;
-                    logMsg += `・シゴロ以上の役なし ➡️ ベース <b>1倍</b><br>`;
+                    logMsg += `🔸 シゴロ以上がいなかったから ベース <b>1倍</b><br>`;
                 }
 
                 let subTotalCups = globalBet * winnerBaseMultiplier;
-                logMsg += `💰 勝者側ベース合計: ${globalBet}杯 × ${winnerBaseMultiplier}倍 ＝ <b>${subTotalCups}杯</b><br>`;
+                logMsg += `<br>💰 勝者の合計: ${globalBet}杯 × ${winnerBaseMultiplier}倍 ＝ <b>${subTotalCups}杯</b><br>`;
 
                 losers.forEach(loser => {
                     let finalDrinkAmt = subTotalCups * loser.role.mult;
                     
-                    logMsg += `💥 最下位 <b>${loser.name}</b> の役ペナルティ: 【${loser.role.t}】(✖️ <b>${loser.role.mult}倍</b>)<br>`;
-                    logMsg += `➡️ 最終計算: ${subTotalCups}杯 × ${loser.role.mult}倍 ➡️ <b style="color:#ff3366; font-size:15px;">${finalDrinkAmt}杯</b><br>`;
+                    logMsg += `💥 負けた <b>${loser.name}</b> の役ペナルティ: 【${loser.role.t}】(✖️ <b>${loser.role.mult}倍</b>)<br>`;
+                    logMsg += `➡️ けいさん: ${subTotalCups}杯 × ${loser.role.mult}倍 ➡️ <b style="color:#EF5350; font-size:15px;">${finalDrinkAmt}杯</b><br>`;
 
                     loser.money += finalDrinkAmt;
-                    logMsg += `➡️ <b>${loser.name}</b> が <b>${finalDrinkAmt} 杯</b> を一気飲み！<br><br>`;
+                    logMsg += `😭 <b>${loser.name}</b> は <b>${finalDrinkAmt} 杯</b> 飲んでね！<br>`;
                 });
             }
 
@@ -594,13 +672,13 @@
                 }
 
                 if (gameState === "RESULT") {
-                    if (p.outcome === "WIN") { cardClass += " win"; badge = `<span class="badge win-badge">🏆 WINNER</span>`; }
-                    if (p.outcome === "LOSE") { cardClass += " lose"; badge = `<span class="badge lose-badge">💀 LOSER</span>`; }
+                    if (p.outcome === "WIN") { cardClass += " win"; badge = `<span class="badge win-badge">👑 WIN</span>`; }
+                    if (p.outcome === "LOSE") { cardClass += " lose"; badge = `<span class="badge lose-badge">💀 LOSE</span>`; }
                 }
 
-                let statusStr = "待機中";
-                if (gameState === "ROLLING_PLAYERS" && idx === currentPlayerTurn) statusStr = "🎲 あなたの番です！";
-                else if (p.role) statusStr = `確定: ${p.role.t} (${p.rollCount}回目)`;
+                let statusStr = "まっててね";
+                if (gameState === "ROLLING_PLAYERS" && idx === currentPlayerTurn) statusStr = "🎲 きみのばんだよ！";
+                else if (p.role) statusStr = `【 ${p.role.t} 】 (${p.rollCount}回目)`;
                 else if (p.rollCount > 0) statusStr = `${p.rollCount}回目 目なし`;
 
                 let dicePreviewHtml = "";
@@ -614,7 +692,7 @@
                     <div class="${cardClass}">
                         <div class="p-info">
                             <div class="p-name">${p.name} ${badge}</div>
-                            <div class="p-money">累積飲酒量: <b style="color:#ffcc00; font-size:16px;">${p.money}</b> 杯</div>
+                            <div class="p-money">これまで飲んだ量: <b style="color:#FF7043; font-size:16px;">${p.money}</b> 杯</div>
                             <div class="p-status">${statusStr}</div>
                         </div>
                         <div class="p-dice-preview">${dicePreviewHtml}</div>
