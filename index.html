@@ -117,7 +117,7 @@
         .p-money { font-size: 12px; color: #ccc; margin-top: 2px; }
         .p-status { font-size: 14px; font-weight: bold; color: #ff3366; margin-top: 2px; }
         
-        /* 結果一覧のリアルなドットサイコロのスタイル（CSS描画） */
+        /* 結果一覧のリアルなドットサイコロのスタイル */
         .p-dice-preview {
             display: flex;
             gap: 5px;
@@ -217,7 +217,6 @@
     </div>
 
     <script>
-        const F = ["", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
         const rotateAngles = {
             1: {x: 0, y: 0}, 6: {x: 0, y: 180}, 2: {x: 0, y: -90},
             5: {x: 0, y: 90}, 3: {x: -90, y: 0}, 4: {x: 90, y: 0}
@@ -231,23 +230,31 @@
         let isRolling = false;
         let logOpen = false;
 
-        // Web Audio APIのコンテキスト
+        // Web Audio APIコンテキスト
         let audioCtx = null;
 
+        // 🛠 強化：iOSのロックを最速で解除するためのオーディオ初期化
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
         }
 
-        // 🎲 サイコロが跳ねる音を合成する関数
+        // 画面のどこかを初めてタップした瞬間に音を鳴らせるようにする（iOS制限対策）
+        window.addEventListener('click', initAudio, { once: true });
+        window.addEventListener('touchstart', initAudio, { once: true });
+
+        // 🎲 サイコロのカタカタ音
         function playDiceSound() {
             if (!audioCtx) return;
             try {
+                initAudio();
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 
-                // サイコロが木や陶器にぶつかる高めのコンコン音
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(150 + Math.random() * 600, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.05);
@@ -262,12 +269,12 @@
             } catch(e) {}
         }
 
-        // 🎉 勝者確定時のファンファーレBGMを合成する関数
+        // 🎉 勝者確定時のファンファーレ音
         function playFanfareBGM() {
             if (!audioCtx) return;
             try {
+                initAudio();
                 let now = audioCtx.currentTime;
-                // ピポパポ調のハッピーな3コード和音
                 let notes = [523.25, 659.25, 783.99, 1046.50]; // ド・ミ・ソ・ド
                 notes.forEach((freq, index) => {
                     let osc = audioCtx.createOscillator();
@@ -304,7 +311,7 @@
         }
 
         function initGame() {
-            initAudio(); // 画面を触ったタイミングでオーディオを起動
+            initAudio(); 
             numPlayers = +document.getElementById('player-num').value;
             players = [];
             
@@ -373,7 +380,7 @@
                     let ry = Math.floor(Math.random()*4)*90;
                     document.getElementById(`d3d${i}`).style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
                 }
-                playDiceSound(); // シャッフル中のカタカタ音を鳴らす
+                playDiceSound(); 
             } else {
                 b.classList.remove('shaking');
                 for(let i=1; i<=3; i++) {
@@ -403,7 +410,7 @@
         }
 
         function lockBetting() {
-            initAudio(); // iOS対策：ユーザー操作を挟んで再度コンテキストをアクティブにする
+            initAudio(); 
             let inputVal = +document.getElementById('global-bet-input').value;
             if(inputVal < 1) {
                 alert("賭け杯数は1杯以上を入力してください。");
@@ -511,7 +518,7 @@
                 logMsg += `全員同じ強さの役のため引き分け！誰もいません。🍻<br>`;
                 document.getElementById('bowl-title').innerText = `全員引き分け！`;
             } else {
-                playFanfareBGM(); // 勝敗決定時にファンファーレを鳴らす！
+                playFanfareBGM(); 
                 
                 let winnerNames = winners.map(w => w.name).join(", ");
                 let loserNames = losers.map(l => l.name).join(", ");
