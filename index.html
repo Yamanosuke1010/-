@@ -322,30 +322,32 @@
         window.addEventListener('click', initAudio, { once: true });
         window.addEventListener('touchstart', initAudio, { once: true });
 
-        // 🍵 お茶碗の中で「カラカラッ！」と鳴る高音のサウンド
-        function playDiceSound() {
-            if (!audioCtx) return;
-            try {
-                initAudio();
-                // 陶器とプラスチックが当たるような軽い音を短く2回鳴らして「カラカラ感」を出す
-                for(let i=0; i<2; i++) {
-                    let osc = audioCtx.createOscillator();
-                    let gain = audioCtx.createGain();
-                    
-                    osc.type = 'sine'; // 陶器のような澄んだ音
-                    osc.frequency.setValueAtTime(1200 + Math.random() * 800, audioCtx.currentTime + (i*0.03));
-                    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + (i*0.03) + 0.03);
-                    
-                    gain.gain.setValueAtTime(0.5, audioCtx.currentTime + (i*0.03));
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + (i*0.03) + 0.03);
-                    
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(audioCtx.currentTime + (i*0.03));
-                    osc.stop(audioCtx.currentTime + (i*0.03) + 0.04);
-                }
-            } catch(e) {}
+        // 🍵 お茶碗の中で「カランッ！」と鳴る音響
+function playDiceSound() {
+    if (!audioCtx) return;
+    try {
+        initAudio();
+        // 3回ランダムに音を重ねることで、サイコロが跳ねる「カランカラン」感を演出
+        for(let i=0; i<3; i++) {
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            
+            // 周波数を高め（1800Hz〜2500Hz）にして、金属や陶器っぽい高い音に設定
+            osc.type = 'sine'; 
+            osc.frequency.setValueAtTime(1800 + Math.random() * 700, audioCtx.currentTime + (i*0.06));
+            
+            // 余韻を短く鋭くすることで「乾いた音」を作る
+            gain.gain.setValueAtTime(0.4, audioCtx.currentTime + (i*0.06));
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (i*0.06) + 0.04);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime + (i*0.06));
+            osc.stop(audioCtx.currentTime + (i*0.06) + 0.05);
         }
+    } catch(e) {}
+}
+
 
         // 🎉 ポップなファンファーレ
         function playFanfareBGM() {
