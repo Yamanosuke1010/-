@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>電脳チンチロリン -完全版-</title>
+    <title>電脳チンチロリン -大画面お椀版-</title>
     <style>
+        *, *::before, *::after { box-sizing: border-box; }
         body {
             background-color: #121212;
             color: #ffffff;
@@ -12,45 +13,124 @@
             text-align: center;
             margin: 0;
             padding: 15px;
-            min-height: 95vh;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        h1 { color: #ffcc00; font-size: 22px; margin: 5px 0; }
-        .subtitle { font-size: 11px; color: #888; margin-bottom: 15px; }
-        .box { background: #222; padding: 12px; border-radius: 12px; margin-bottom: 15px; font-size: 14px; }
+        h1 { color: #ffcc00; font-size: 22px; margin: 5px 0 2px 0; }
+        .subtitle { font-size: 11px; color: #888; margin-bottom: 12px; }
+        .box { background: #222; padding: 12px; border-radius: 12px; margin-bottom: 15px; font-size: 14px; width: 100%; max-width: 480px; }
         select, input, button {
             font-size: 15px; padding: 6px 10px; background: #333; color: white;
             border: 1px solid #555; border-radius: 6px; margin: 3px;
         }
+        
+        /* 大画面お椀・サイコロ表示エリア */
+        #bowl-container {
+            background: #1a1a1a;
+            border: 3px dashed #444;
+            border-radius: 16px;
+            padding: 15px;
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 15px;
+        }
+        #bowl-title {
+            font-size: 14px;
+            color: #ffcc00;
+            font-weight: bold;
+            margin-bottom: 10px;
+            min-height: 20px;
+        }
+        #main-bowl {
+            background: radial-gradient(circle, #ffffff 65%, #dcdcdc 100%);
+            border: 12px solid #8b4513;
+            border-radius: 50%;
+            width: 240px;
+            height: 240px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+            position: relative;
+        }
+        .main-die {
+            width: 52px;
+            height: 52px;
+            background-color: white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #000;
+            box-shadow: 2px 4px 6px rgba(0,0,0,0.4);
+            transition: all 0.1s;
+        }
+        .main-die[data-value="1"] { color: #d00; font-size: 42px; }
+        
+        /* 演出アニメーション */
+        .shaking {
+            animation: shake 0.1s infinite alternate;
+        }
+        @keyframes shake {
+            0% { transform: translate(6px, 4px) rotate(10deg); }
+            100% { transform: translate(-6px, -4px) rotate(-10deg); }
+        }
+        
         .btn-main {
             background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);
-            border: none; color: #111; padding: 14px 0; width: 85%; max-width: 300px;
+            border: none; color: #111; padding: 14px 0; width: 85%; max-width: 320px;
             font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255,153,0,0.3); margin: 10px auto;
+            box-shadow: 0 4px 15px rgba(255,153,0,0.3); margin: 5px auto 15px auto;
             display: block; -webkit-tap-highlight-color: transparent;
         }
-        .btn-main:disabled { background: #444; color: #888; box-shadow: none; }
-        .player-list { width: 100%; max-width: 450px; margin: 0 auto; }
+        .btn-main:disabled { background: #444; color: #888; box-shadow: none; cursor: not-allowed; }
+        
+        /* プレイヤーカード一覧 */
+        .player-list { width: 100%; max-width: 480px; }
         .p-card {
             background: #2a2a2a; padding: 12px; border-radius: 12px; margin: 8px 0;
             border-left: 5px solid #555; text-align: left; position: relative;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .p-card.oya { border-left: 5px solid #ff3366; background: linear-gradient(90deg, #3a1a24 0%, #2a2a2a 100%); }
-        .p-card.win { border-left: 5px solid #ffcc00; background: linear-gradient(90deg, #3a321a 0%, #2a2a2a 100%); }
-        .badge { position: absolute; top: 10px; right: 10px; font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .p-card.current-roller {
+            border-left: 5px solid #ffcc00;
+            background: #333322;
+            box-shadow: 0 0 8px rgba(255,204,0,0.3);
+        }
+        .p-card.oya { border-left: 5px solid #ff3366; background: #332228; }
+        .p-card.win { border-left: 5px solid #28a745; background: #223326; }
+        
+        .p-info { flex: 1; }
+        .p-name { font-weight: bold; font-size: 15px; color: #fff; display: flex; align-items: center; gap: 5px; }
+        .p-money { font-size: 12px; color: #ccc; margin-top: 2px; }
+        .p-status { font-size: 14px; font-weight: bold; color: #ff3366; margin-top: 2px; }
+        
+        .p-dice-preview {
+            font-size: 20px;
+            letter-spacing: 2px;
+            background: #1e1e1e;
+            padding: 4px 8px;
+            border-radius: 6px;
+            min-width: 75px;
+            text-align: center;
+        }
+        
+        .badge { font-size: 10px; padding: 2px 5px; border-radius: 4px; font-weight: bold; }
         .badge.oya { background: #ff3366; color: white; }
         .badge.ko { background: #444; color: #aaa; }
-        .p-name { font-weight: bold; font-size: 15px; color: #fff; margin-bottom: 4px; }
-        .p-money { font-size: 13px; color: #ccc; }
-        .dice-line { font-size: 24px; letter-spacing: 3px; margin: 5px 0; min-height: 32px; }
-        .status-line { font-size: 15px; font-weight: bold; color: #ff3366; }
-        .shaking { animation: shake 0.1s infinite alternate; color: #888; }
-        @keyframes shake { 0% { transform: translate(2px, 1px); } 100% { transform: translate(-2px, -1px); } }
+        
         .log-box { font-size: 12px; color: #aaa; max-height: 100px; overflow-y: auto; text-align: left; padding: 5px; background: #1a1a1a; border-radius: 6px; }
     </style>
 </head>
 <body>
 
-    <h1>🎲 電脳チンチロリン -完全版-</h1>
+    <h1>🎲 電脳チンチロリン -大画面お椀版-</h1>
     <div class="subtitle">Presented by Syunki.Jr</div>
 
     <!-- 設定エリア -->
@@ -63,13 +143,23 @@
         <button onclick="resetData()" style="background:#555; font-size:11px;">データ初期化</button>
     </div>
 
-    <!-- ステータス表示エリア -->
+    <!-- ステータス・BETエリア -->
     <div id="game-status" class="box" style="display:none;">
         <span id="round-title" style="font-weight:bold; color:#ffcc00;"></span>
         <div id="bet-inputs" style="margin-top: 8px;"></div>
     </div>
 
-    <!-- メインボタン -->
+    <!-- 大画面サイコロお椀エリア -->
+    <div id="bowl-container" style="display:none;">
+        <div id="bowl-title">勝負開始ボタンを押してください</div>
+        <div id="main-bowl">
+            <div class="main-die" id="md1">⚀</div>
+            <div class="main-die" id="md2">⚀</div>
+            <div class="main-die" id="md3">⚀</div>
+        </div>
+    </div>
+
+    <!-- メインアクションボタン -->
     <button class="btn-main" id="action-btn" onclick="handleAction()" style="display:none;"></button>
 
     <!-- プレイヤー一覧 -->
@@ -83,33 +173,34 @@
 
     <script>
         const F = ["", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
-        let gameState = "SETUP"; // SETUP, OYA_KIME, BETTING, ROLLING, RESULT
+        let gameState = "SETUP"; // SETUP, OYA_KIME, BETTING, ROLLING_PLAYERS, RESULT
         let numPlayers = 2;
         let players = [];
         let oyaIdx = 0;
+        let currentPlayerTurn = 0; // 現在誰が振る番か
         let isRolling = false;
 
-        // ゲーム初期化
         function initGame() {
             numPlayers = +document.getElementById('player-num').value;
             players = [];
             
-            // ローカルストレージから所持金読み込み、なければ10000点
             for (let i = 1; i <= numPlayers; i++) {
-                let savedMoney = localStorage.getItem(`chinchiro_p_${i}`);
+                let savedMoney = localStorage.getItem(`chinchiro_big_p_${i}`);
                 players.push({
                     id: i,
                     money: savedMoney !== null ? +savedMoney : 10000,
                     bet: 0,
-                    dice: [],
+                    dice: [1, 1, 1],
                     role: null,
                     rollCount: 0,
-                    isOya: false
+                    isOya: false,
+                    isWin: false
                 });
             }
             
             document.getElementById('setup-area').style.display = 'none';
             document.getElementById('game-status').style.display = 'block';
+            document.getElementById('bowl-container').style.display = 'block';
             document.getElementById('action-btn').style.display = 'block';
             document.getElementById('log-area').style.display = 'block';
             
@@ -118,13 +209,13 @@
         }
 
         function saveMoney() {
-            players.forEach(p => localStorage.setItem(`chinchiro_p_${p.id}`, p.money));
+            players.forEach(p => localStorage.setItem(`chinchiro_big_p_${p.id}`, p.money));
         }
 
         function resetData() {
             if(confirm("全員の所持金を10000点にリセットしますか？")) {
                 localStorage.clear();
-                alert("リセットしました。再度開始してください。");
+                alert("リセットしました。");
                 location.reload();
             }
         }
@@ -134,50 +225,74 @@
             logs.innerHTML = `<div>${msg}</div>` + logs.innerHTML;
         }
 
+        function updateMainBowl(dice, shake = false) {
+            const b = document.getElementById('main-bowl');
+            const d1 = document.getElementById('md1');
+            const d2 = document.getElementById('md2');
+            const d3 = document.getElementById('md3');
+            
+            if(shake) {
+                b.classList.add('shaking');
+            } else {
+                b.classList.remove('shaking');
+            }
+            
+            d1.innerText = F[dice[0]]; d1.setAttribute('data-value', dice[0]);
+            d2.innerText = F[dice[1]]; d2.setAttribute('data-value', dice[1]);
+            d3.innerText = F[dice[2]]; d3.setAttribute('data-value', dice[2]);
+        }
+
         // --- 親決めフェーズ ---
         function startOyaKime() {
             gameState = "OYA_KIME";
-            document.getElementById('round-title').innerText = "👑 親決め (各自サイコロを1個振る)";
-            document.getElementById('action-btn').innerText = "サイコロを振って親を決める";
+            document.getElementById('round-title').innerText = "👑 親決め番";
+            document.getElementById('bowl-title').innerText = "お椀にダイスを投げ入れて親を決めます";
+            document.getElementById('action-btn').innerText = "ダイスを振る！";
+            updateMainBowl([1, 1, 1]);
             renderPlayers();
         }
 
         function runOyaKime() {
             isRolling = true;
             document.getElementById('action-btn').disabled = true;
-            
-            // アニメーション演出
+            if (navigator.vibrate) navigator.vibrate([100, 100, 100]);
+
             let ticks = 0;
             let interval = setInterval(() => {
-                players.forEach(p => p.dice = [Math.floor(Math.random()*6)+1]);
-                renderPlayers(true);
+                let tempDice = [Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1];
+                updateMainBowl(tempDice, true);
                 ticks++;
-                if(ticks > 15) {
+                if(ticks > 25) {
                     clearInterval(interval);
                     
-                    // 結果確定
-                    players.forEach(p => p.dice = [Math.floor(Math.random()*6)+1]);
+                    let finalDice = [];
+                    players.forEach((p) => {
+                        let r = Math.floor(Math.random()*6)+1;
+                        p.dice = [r, r, r];
+                        finalDice.push(r);
+                    });
                     
-                    // 一番出目が大きい人を親にする（同点の場合は若い番号）
                     let maxVal = 0;
                     let winnerIdx = 0;
-                    players.forEach((p, idx) => {
-                        if(p.dice[0] > maxVal) {
-                            maxVal = p.dice[0];
+                    finalDice.forEach((val, idx) => {
+                        if(val > maxVal) {
+                            maxVal = val;
                             winnerIdx = idx;
                         }
                     });
                     
                     oyaIdx = winnerIdx;
-                    players[oyaIdx].isOya = true;
+                    players.forEach((p, idx) => p.isOya = (idx === oyaIdx));
                     
-                    addLog(`プレイヤー ${players[oyaIdx].id} が「${maxVal}」を出して親に決定！`);
+                    updateMainBowl([maxVal, maxVal, maxVal], false);
+                    document.getElementById('bowl-title').innerText = `🏆 プレイヤー ${players[oyaIdx].id} が親に決定！`;
+                    addLog(`親決め：プレイヤー ${players[oyaIdx].id} が最高値「${maxVal}」を出して親になりました。`);
                     
                     setTimeout(() => {
                         isRolling = false;
                         document.getElementById('action-btn').disabled = false;
                         startBetting();
-                    }, 1500);
+                    }, 2000);
                 }
             }, 80);
         }
@@ -186,25 +301,24 @@
         function startBetting() {
             gameState = "BETTING";
             document.getElementById('round-title').innerText = `💰 BET受付中 (親: プレイヤー ${players[oyaIdx].id})`;
-            document.getElementById('action-btn').innerText = "BETを確定して勝負！";
+            document.getElementById('bowl-title').innerText = "子がBET金額を入力しています...";
+            document.getElementById('action-btn').innerText = "BETを確定して勝負開始";
             
-            // BET入力ボックスの生成 (子のみ)
             let betHtml = "";
             players.forEach((p, idx) => {
                 if(idx === oyaIdx) {
-                    betHtml += `<span style="color:#ff3366; margin-right:10px;">親: P${p.id}</span>`;
+                    betHtml += `<span style="color:#ff3366; margin-right:10px; font-weight:bold;">親: P${p.id}</span>`;
                 } else {
-                    betHtml += `P${p.id} BET: <input type="number" id="bet-${p.id}" value="1000" min="100" max="${Math.min(p.money, 5000)}" style="width:70px;"> `;
+                    betHtml += `P${p.id}: <input type="number" id="bet-${p.id}" value="1000" min="100" max="${Math.min(p.money, 5000)}" style="width:75px;"> `;
                 }
             });
             document.getElementById('bet-inputs').innerHTML = betHtml;
             
-            players.forEach(p => { p.dice = []; p.role = null; p.rollCount = 0; });
+            players.forEach(p => { p.role = null; p.rollCount = 0; p.isWin = false; });
             renderPlayers();
         }
 
         function lockBetting() {
-            // BET額の回収
             let valid = true;
             players.forEach((p, idx) => {
                 if(idx !== oyaIdx) {
@@ -219,92 +333,100 @@
             });
             
             if(!valid) return;
-            
             document.getElementById('bet-inputs').innerHTML = "";
-            startRolling();
+            
+            currentPlayerTurn = (oyaIdx + 1) % numPlayers;
+            setupNextRoller();
         }
 
-        // --- サイコロ振り＆3回振り直しフェーズ ---
-        function startRolling() {
-            gameState = "ROLLING";
-            document.getElementById('round-title').innerText = "🎲 尋常勝負！お椀が震える！";
-            document.getElementById('action-btn').innerText = "コップを一斉に振る！(最大3回)";
+        // --- 順番に振るフェーズ ---
+        function setupNextRoller() {
+            gameState = "ROLLING_PLAYERS";
+            let p = players[currentPlayerTurn];
+            
+            document.getElementById('round-title').innerText = `🎲 プレイヤー ${p.id} の番 (${p.isOya ? "親" : "子"})`;
+            document.getElementById('bowl-title').innerText = `プレイヤー ${p.id} の挑戦 (残り ${3 - p.rollCount} 回)`;
+            document.getElementById('action-btn').innerText = `お椀を振る！ (${p.rollCount + 1}回目)`;
+            
             renderPlayers();
         }
 
-        function runRolling() {
+        function runRollingPlayer() {
             isRolling = true;
             document.getElementById('action-btn').disabled = true;
             if (navigator.vibrate) navigator.vibrate([100, 100, 100]);
 
+            let p = players[currentPlayerTurn];
+            p.rollCount++;
+
             let ticks = 0;
             let interval = setInterval(() => {
-                players.forEach(p => {
-                    if(!p.role && p.rollCount < 3) p.dice = [1,1,1].map(()=>Math.floor(Math.random()*6)+1);
-                });
-                renderPlayers(true);
+                let tempDice = [Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1];
+                updateMainBowl(tempDice, true);
                 ticks++;
 
-                if(ticks > 25) { // 約2秒のアニメーション
+                if(ticks > 30) {
                     clearInterval(interval);
                     
-                    // 各プレイヤーの出目判定・振り直し処理
-                    players.forEach(p => {
-                        if (p.role) return; // 既に役があればスキップ
-                        
-                        p.rollCount++;
-                        p.dice = [1,1,1].map(()=>Math.floor(Math.random()*6)+1);
-                        p.role = judgeChinchiro(p.dice);
-                        
-                        // 3回振っても「役なし」ならそれが最終結果
-                        if(p.role.t === "役なし" && p.rollCount < 3) {
-                            p.role = null; // 次のターンで振り直し可能にする
-                        }
-                    });
-
-                    // 全員が確定したかチェック
-                    let allDone = players.every(p => p.role !== null || p.rollCount >= 3);
+                    let d = [Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1];
+                    p.dice = d;
+                    p.role = judgeChinchiro(d);
                     
-                    if(allDone) {
-                        gameState = "RESULT";
-                        calcPayout();
+                    updateMainBowl(d, false);
+                    
+                    if (p.role.t !== "役なし" || p.rollCount >= 3) {
+                        addLog(`プレイヤー ${p.id}: ${p.rollCount}回目に [ ${d.join(' ')} ] ➡️ 【${p.role.t}】確定`);
+                        moveToNextPlayer();
                     } else {
-                        document.getElementById('action-btn').innerText = "役なしのプレイヤーを振り直す！";
+                        document.getElementById('bowl-title').innerText = `役なし！もう一太刀！ (残り ${3 - p.rollCount} 回)`;
+                        document.getElementById('action-btn').innerText = `もう一度振る (${p.rollCount + 1}回目)`;
                         document.getElementById('action-btn').disabled = false;
+                        isRolling = false;
+                        renderPlayers();
                     }
-                    isRolling = false;
-                    renderPlayers();
                 }
             }, 80);
         }
 
-        // --- 勝敗・配当計算フェーズ ---
-        function calcPayout() {
-            document.getElementById('round-title').innerText = "🏆 精算結果";
-            document.getElementById('action-btn').innerText = "次のゲームへ";
-            document.getElementById('action-btn').disabled = false;
+        function moveToNextPlayer() {
+            currentPlayerTurn = (currentPlayerTurn + 1) % numPlayers;
+            let allDone = players.every(p => p.role !== null);
+            
+            setTimeout(() => {
+                isRolling = false;
+                document.getElementById('action-btn').disabled = false;
+                
+                if (allDone) {
+                    gameState = "RESULT";
+                    calcPayout();
+                } else {
+                    setupNextRoller();
+                }
+            }, 1500);
+        }
 
+        // --- 勝敗精算 ---
+        function calcPayout() {
             let oya = players[oyaIdx];
-            let logMsg = `【精算】親(P${oya.id})の役: ${oya.role.t} <br>`;
+            document.getElementById('round-title').innerText = "🏆 精算結果発表";
+            document.getElementById('bowl-title').innerText = `親の役: 【${oya.role.t}】`;
+            document.getElementById('action-btn').innerText = "次ゲームのBETへ";
+            
+            let logMsg = `【精算結果】親(P${oya.id})の最終役: ${oya.role.t}<br>`;
 
             players.forEach((p, idx) => {
-                if(idx === oyaIdx) return; // 親自身はスキップ
+                if(idx === oyaIdx) return;
                 
                 let multiplier = 1;
                 let win = false;
                 let draw = false;
 
-                // 親か子のどちらかが特殊な役（倍率あり）の場合
                 let targetRole = (p.role.mult > oya.role.mult) ? p.role : oya.role;
                 multiplier = targetRole.mult;
 
-                if (p.role.r > oya.role.r) {
-                    win = true; // 子の勝ち
-                } else if (p.role.r < oya.role.r) {
-                    win = false; // 親の勝ち
-                } else {
-                    draw = true; // 引き分け
-                }
+                if (p.role.r > oya.role.r) win = true;
+                else if (p.role.r < oya.role.r) win = false;
+                else draw = true;
 
                 if (draw) {
                     logMsg += `P${p.id} vs 親: 引き分け (±0)<br>`;
@@ -313,95 +435,87 @@
                     p.money += winAmt;
                     oya.money -= winAmt;
                     p.isWin = true;
-                    logMsg += `P${p.id}の勝ち！ 役: ${p.role.t} (+${winAmt})<br>`;
+                    logMsg += `🎉 P${p.id}の勝ち！ 役: ${p.role.t} (+${winAmt.toLocaleString()}点)<br>`;
                 } else {
                     let loseAmt = p.bet * multiplier;
                     p.money -= loseAmt;
                     oya.money += loseAmt;
-                    p.isWin = false;
-                    logMsg += `親の勝ち！ (P${p.id}から -${loseAmt})<br>`;
+                    logMsg += `💀 親の勝ち！ (P${p.id}から -${loseAmt.toLocaleString()}点)<br>`;
                 }
             });
 
             addLog(logMsg);
             saveMoney();
             
-            // 次の親番を回す (親がシゴロ・ゾロ目・アラシ等の場合は親続行、それ以外は次の人へ)
             if(oya.role.r >= 90) {
-                addLog(`親(P${oya.id})の勝ち越し・または強い役のため、親は流れません。`);
+                addLog(`親(P${oya.id})が強い役（シゴロ以上など）を出したため、親番続行です！`);
             } else {
                 players[oyaIdx].isOya = false;
                 oyaIdx = (oyaIdx + 1) % numPlayers;
                 players[oyaIdx].isOya = true;
-                addLog(`親が移動します ➡️ 次の親は プレイヤー ${players[oyaIdx].id}`);
+                addLog(`親が流れます ➡️ 次の親は プレイヤー ${players[oyaIdx].id}`);
             }
+            
+            renderPlayers();
         }
 
         function handleAction() {
             if (gameState === "OYA_KIME") runOyaKime();
             else if (gameState === "BETTING") lockBetting();
-            else if (gameState === "ROLLING") runRolling();
+            else if (gameState === "ROLLING_PLAYERS") runRollingPlayer();
             else if (gameState === "RESULT") startBetting();
         }
 
-        // --- 画面描画 ---
-        function renderPlayers(isShaking = false) {
+        function renderPlayers() {
             const display = document.getElementById('players-display');
             let html = "";
             
             players.forEach((p, idx) => {
                 let cardClass = "p-card";
                 if (p.isOya) cardClass += " oya";
+                if (gameState === "ROLLING_PLAYERS" && idx === currentPlayerTurn) cardClass += " current-roller";
                 if (gameState === "RESULT" && p.isWin) cardClass += " win";
 
                 let badge = p.isOya ? `<span class="badge oya">親</span>` : `<span class="badge ko">子 (BET:${p.bet || 0})</span>`;
                 if (gameState === "OYA_KIME") badge = "";
 
-                let diceStr = p.dice.map(v => F[v]).join(" ");
-                let shakeClass = (isShaking && !p.role && p.rollCount < 3) ? "shaking" : "";
+                let statusStr = "待機中";
+                if (gameState === "OYA_KIME" && p.role) statusStr = "準備完了";
+                else if (gameState === "ROLLING_PLAYERS" && idx === currentPlayerTurn) statusStr = "🎲 振る番です！";
+                else if (p.role) statusStr = `確定: ${p.role.t} (${p.rollCount}回目)`;
+                else if (p.rollCount > 0) statusStr = `${p.rollCount}回目 目なし`;
 
-                let statusStr = "";
-                if (gameState === "OYA_KIME" && p.dice.length > 0) statusStr = `${p.dice[0]}の目`;
-                else if (p.role) statusStr = `${p.role.t} (${p.rollCount}回目)`;
-                else if (gameState === "ROLLING" && p.rollCount > 0) statusStr = `${p.rollCount}回目 目なし...`;
+                let dicePreview = p.role ? p.dice.map(v => F[v]).join("") : "ーーー";
 
                 html += `
                     <div class="${cardClass}">
-                        ${badge}
-                        <div class="p-name">プレイヤー ${p.id}</div>
-                        <div class="p-money">所持金: ${p.money.toLocaleString()} 点</div>
-                        <div class="dice-line ${shakeClass}">${diceStr || "　"}</div>
-                        <div class="status-line">${statusStr}</div>
+                        <div class="p-info">
+                            <div class="p-name">プレイヤー ${p.id} ${badge}</div>
+                            <div class="p-money">所持金: ${p.money.toLocaleString()} 点</div>
+                            <div class="p-status">${statusStr}</div>
+                        </div>
+                        <div class="p-dice-preview">${dicePreview}</div>
                     </div>`;
             });
             display.innerHTML = html;
         }
 
-        // --- チンチロリン役判定ロジック ---
         function judgeChinchiro(a) {
             const c = {};
             a.forEach(x => c[x] = (c[x] || 0) + 1);
             const v = Object.values(c);
             const s = [...a].sort((x, y) => x - y);
             
-            // ピンゾロ (5倍)
             if (a[0] === 1 && a[1] === 1 && a[2] === 1) return { r: 500, t: "ピンゾロ", mult: 5 };
-            // アラシ (3倍)
             if (v.includes(3)) return { r: 100 + a[0], t: a[0] + "のアラシ", mult: 3 };
-            // シゴロ (2倍)
             if ("" + s === "4,5,6") return { r: 90, t: "シゴロ", mult: 2 };
-            // ヒフミ (2倍払う)
             if ("" + s === "1,2,3") return { r: -1, t: "ヒフミ", mult: 2 };
             
-            // 通常の目
             if (v.includes(2)) {
                 let e;
-                for (let k in c) {
-                    if (c[k] == 1) e = +k;
-                }
+                for (let k in c) { if (c[k] == 1) e = +k; }
                 return { r: e, t: e + "の目", mult: 1 };
             }
-            // 役なし
             return { r: 0, t: "役なし", mult: 1 };
         }
     </script>
