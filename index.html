@@ -117,34 +117,52 @@
         .p-money { font-size: 12px; color: #ccc; margin-top: 2px; }
         .p-status { font-size: 14px; font-weight: bold; color: #ff3366; margin-top: 2px; }
         
-        /* 💡 改善：結果一覧のリアルな平面サイコロスタイル */
+        /* 🛠 修正：結果一覧のリアルなドットサイコロのスタイル（CSS描画） */
         .p-dice-preview {
             display: flex;
-            gap: 4px;
+            gap: 5px;
             align-items: center;
             justify-content: center;
-            background: #1e1e1e;
+            background: #1a1a1a;
             padding: 6px 8px;
             border-radius: 8px;
-            min-width: 95px;
+            min-width: 100px;
         }
-        .mini-die {
+        .mini-die-plate {
             width: 24px;
             height: 24px;
             background: #ffffff;
             border-radius: 4px;
-            color: #000000;
-            font-size: 18px;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 1px 2px 3px rgba(0,0,0,0.5);
+            position: relative;
+            box-shadow: 1px 2px 3px rgba(0,0,0,0.6);
         }
-        .mini-die[data-val="1"] {
-            color: #d00000;
-            font-size: 21px; /* 1の目だけピンゾロらしく強調 */
+        /* ドット配置の共通パーツ */
+        .dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #000000;
+            border-radius: 50%;
         }
+        /* 1の目だけ大きな赤丸 */
+        .dot-center-red {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #d00000;
+            border-radius: 50%;
+            top: 8px;
+            left: 8px;
+        }
+        /* 各位置の指定 */
+        .top-left     { top: 4px; left: 4px; }
+        .top-right    { top: 4px; right: 4px; }
+        .mid-left     { top: 10px; left: 4px; }
+        .center       { top: 10px; left: 10px; }
+        .mid-right    { top: 10px; right: 4px; }
+        .bottom-left  { bottom: 4px; left: 4px; }
+        .bottom-right { bottom: 4px; right: 4px; }
+
         .mini-die-empty {
             color: #666;
             font-size: 12px;
@@ -221,7 +239,6 @@
     </div>
 
     <script>
-        const F = ["", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
         const rotateAngles = {
             1: {x: 0, y: 0}, 6: {x: 0, y: 180}, 2: {x: 0, y: -90},
             5: {x: 0, y: 90}, 3: {x: -90, y: 0}, 4: {x: 90, y: 0}
@@ -505,6 +522,19 @@
             else if (gameState === "RESULT") startBetting();
         }
 
+        // 🛠 修正：各出目のドットパターンをCSS用HTMLで出力するヘルパー
+        function getDiceHTML(val) {
+            let dots = "";
+            if (val === 1) dots = '<div class="dot-center-red"></div>';
+            if (val === 2) dots = '<div class="dot top-left"></div><div class="dot bottom-right"></div>';
+            if (val === 3) dots = '<div class="dot top-left"></div><div class="dot center"></div><div class="dot bottom-right"></div>';
+            if (val === 4) dots = '<div class="dot top-left"></div><div class="dot top-right"></div><div class="dot bottom-left"></div><div class="dot bottom-right"></div>';
+            if (val === 5) dots = '<div class="dot top-left"></div><div class="dot top-right"></div><div class="dot center"></div><div class="dot bottom-left"></div><div class="dot bottom-right"></div>';
+            if (val === 6) dots = '<div class="dot top-left"></div><div class="dot top-right"></div><div class="dot mid-left"></div><div class="dot mid-right"></div><div class="dot bottom-left"></div><div class="dot bottom-right"></div>';
+            
+            return `<div class="mini-die-plate">${dots}</div>`;
+        }
+
         function renderPlayers() {
             const display = document.getElementById('players-display');
             let html = "";
@@ -527,10 +557,10 @@
                 else if (p.role) statusStr = `確定: ${p.role.t} (${p.rollCount}回目)`;
                 else if (p.rollCount > 0) statusStr = `${p.rollCount}回目 目なし`;
 
-                // 💡 改善：結果一覧のダイス表示をリアルなスタイルへHTML生成
+                // 🛠 修正：テキスト絵文字を完全に廃止し、ドット描画HTMLを埋め込む
                 let dicePreviewHtml = "";
                 if (p.role) {
-                    dicePreviewHtml = p.dice.map(v => `<div class="mini-die" data-val="${v}">${F[v]}</div>`).join("");
+                    dicePreviewHtml = p.dice.map(v => getDiceHTML(v)).join("");
                 } else {
                     dicePreviewHtml = `<span class="mini-die-empty">ーーー</span>`;
                 }
