@@ -1,2 +1,2 @@
 # -
-index
+chinchiro_yamanosuke.ver
