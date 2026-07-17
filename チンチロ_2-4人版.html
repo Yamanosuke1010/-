@@ -1,0 +1,22 @@
+<!doctype html><html lang='ja'><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>チンチロ 2〜4人</title><style>
+body{font-family:sans-serif;background:#222;color:#fff;max-width:700px;margin:auto;padding:20px}
+button,select{font-size:16px;padding:8px} .p{background:#333;padding:10px;border-radius:8px;margin:8px 0}
+</style><h1>🎲チンチロ（2〜4人）</h1>
+人数:<select id=n><option>2</option><option>3</option><option>4</option></select>
+<button onclick="play()">全員振る</button><div id=out></div>
+<script>
+const F=["⚀","⚁","⚂","⚃","⚄","⚅"];
+function roll(){return [0,0,0].map(()=>1+Math.floor(Math.random()*6))}
+function judge(a){const c={};a.forEach(x=>c[x]=(c[x]||0)+1);const v=Object.values(c),s=[...a].sort((a,b)=>a-b);
+if(v.includes(3))return{r:100+a[0],t:s[0]+"のアラシ"};
+if(""+s==="4,5,6")return{r:90,t:"シゴロ"};
+if(""+s==="1,2,3")return{r:-1,t:"ヒフミ"};
+if(v.includes(2)){let e;for(let k in c)if(c[k]==1)e=+k;return{r:e,t:e+"の目"};}
+return{r:0,t:"目なし"}}
+function play(){let m=+n.value,res=[];for(let i=1;i<=m;i++){let d=roll(),j=judge(d);res.push({i,d,j});}
+res.sort((a,b)=>b.j.r-a.j.r);
+let h="";res.forEach((x,idx)=>h+=`<div class=p>${idx==0?"🏆 ":""}プレイヤー${x.i}: ${x.d.map(v=>F[v-1]).join(" ")}<br>${x.j.t}</div>`);
+out.innerHTML=h;
+}
+</script>
