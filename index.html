@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#15100C">
-    <title>チンチロ ―飲みゲーム用―</title>
+    <title>悪魔のチンチロ 〜今夜の主役は誰だ？〜</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -339,6 +339,12 @@
         .log-box { font-size: 12.5px; color: var(--washi-muted); font-weight: 500; max-height: 150px; overflow-y: auto; text-align: left; padding: 12px; background: var(--sumi); border-radius: 0 0 10px 10px; display: none; border: 1px solid var(--hairline); border-top: none; line-height: 1.6; }
         .log-box b { color: var(--washi); }
 
+        .rules-box { max-height: 340px; line-height: 1.7; }
+        .rules-box div { margin-bottom: 3px; }
+        .rules-heading { color: var(--kin-bright); font-weight: 700; font-size: 13px; margin: 12px 0 5px 0; font-family: "Shippori Mincho", serif; letter-spacing: 0.5px; }
+        .rules-heading:first-child { margin-top: 0; }
+        .rules-example { background: var(--lacquer-light); border-left: 2px solid var(--kin); border-radius: 6px; padding: 9px 11px; margin-top: 8px; font-size: 12px; color: var(--washi-muted); line-height: 1.8; }
+
         .safety-note { font-size: 11px; color: var(--washi-muted); margin-top: 6px; margin-bottom: 10px; max-width: 480px; line-height: 1.6; }
 
         @media (prefers-reduced-motion: reduce) {
@@ -350,8 +356,8 @@
 </head>
 <body>
 
-    <h1>チンチロ</h1>
-    <div class="subtitle">飲みゲーム用</div>
+    <h1>悪魔のチンチロ</h1>
+    <div class="subtitle">今夜の主役は誰だ？</div>
 
     <!-- 設定エリア -->
     <div id="setup-area" class="box">
@@ -367,6 +373,37 @@
         <div class="name-input-group" id="name-inputs-container"></div>
         <button onclick="initGame()" class="btn-main" style="width:100%; margin-top:15px;">勝負を始める</button>
         <button onclick="resetData()" style="background:transparent; color:var(--washi-muted); border:1px solid #3A2F22; box-shadow:none; font-size:12px; width:100%; margin-top:10px; border-radius:8px; font-family:inherit; font-weight:400;">これまでの記録をリセット</button>
+    </div>
+
+    <!-- ルール説明エリア -->
+    <div class="box" id="rules-area" style="padding:0; border:none; box-shadow:none; background:transparent;">
+        <button class="accordion-btn" onclick="toggleRules()">
+            <span>ルール説明（タップで開閉）</span>
+            <span id="rules-arrow">▼</span>
+        </button>
+        <div id="rules-box" class="log-box rules-box">
+            <div class="rules-heading">遊び方</div>
+            <div>各勝負の最初に賭け杯数（1〜5杯）を決める。決めたら、ひとりずつ茶碗を振り、サイコロの目を確認する。役ができなければ最大3回まで振り直せる（役が出たらそこで終了）。</div>
+
+            <div class="rules-heading">役の強さ（強い順）</div>
+            <div>ピンゾロ（１・１・１）… 5倍・最強</div>
+            <div>アラシ（１以外のゾロ目）… 3倍</div>
+            <div>シゴロ（４・５・６）… 2倍</div>
+            <div>◯の目（同じ目が2つ＋残り1つ）… 1倍（残った数字の大きさが強さになる）</div>
+            <div>役なし（3回振っても揃わず）… 1倍</div>
+            <div>ヒフミ（１・２・３）… 2倍・最弱（役なしより弱い）</div>
+
+            <div class="rules-heading">精算</div>
+            <div>出た役が最も強い人が勝者、最も弱い人が敗者。全員同じ強さなら引き分けで誰も飲まない。</div>
+            <div>シゴロ以上の役を出した人がいれば（勝敗を問わず）、その倍率が賭け杯数に加算される。誰もいなければ1倍のまま。</div>
+            <div>敗者は、その合計杯数にさらに自分の役の倍率をかけた分を飲む。</div>
+            <div class="rules-example">
+                例：賭け杯数1杯、Aさんがシゴロ（2倍）で勝ち、Bさんがヒフミ（2倍）で負けた場合<br>
+                ・1杯 × 2倍（シゴロ）＝ 2杯<br>
+                ・2杯 × 2倍（ヒフミ）＝ 4杯<br>
+                → Bさんは4杯飲む
+            </div>
+        </div>
     </div>
 
     <!-- ナビゲーションエリア -->
@@ -442,6 +479,7 @@
         let currentPlayerTurn = 0;
         let isRolling = false;
         let logOpen = false;
+        let rulesOpen = false;
         let drinkTotals = {};
 
         let audioCtx = null;
@@ -621,6 +659,7 @@
             startBtn.innerText = originalLabel;
 
             document.getElementById('setup-area').style.display = 'none';
+            document.getElementById('rules-area').style.display = 'none';
             document.getElementById('nav-area').style.display = 'block';
             document.getElementById('game-status').style.display = 'block';
             document.getElementById('bowl-container').style.display = 'block';
@@ -651,6 +690,14 @@
             logOpen = !logOpen;
             lb.style.display = logOpen ? 'block' : 'none';
             arrow.innerText = logOpen ? '▲' : '▼';
+        }
+
+        function toggleRules() {
+            const rb = document.getElementById('rules-box');
+            const arrow = document.getElementById('rules-arrow');
+            rulesOpen = !rulesOpen;
+            rb.style.display = rulesOpen ? 'block' : 'none';
+            arrow.innerText = rulesOpen ? '▲' : '▼';
         }
 
         function addLog(msg) {
@@ -720,8 +767,14 @@
             document.getElementById('action-btn').innerText = "杯数を決めて勝負開始";
 
             document.getElementById('bet-inputs').innerHTML = `
-                <span>この勝負のかけ金: </span>
-                <input type="number" id="global-bet-input" value="1" min="1" max="5" inputmode="numeric" style="width:60px;"> 杯
+                <span>この勝負の賭け杯数: </span>
+                <select id="global-bet-input" style="width:70px;">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select> 杯
             `;
 
             players.forEach(p => { p.role = null; p.rollCount = 0; p.outcome = ""; });
