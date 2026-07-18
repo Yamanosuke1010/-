@@ -3,243 +3,360 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>お茶碗チンチロ -ポップ＆カラカラ版-</title>
+    <meta name="theme-color" content="#15100C">
+    <title>チンチロ ―飲みゲーム用―</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; }
+
+        :root {
+            --sumi: #15100C;
+            --lacquer: #211A14;
+            --lacquer-light: #2A2117;
+            --shu: #B23A2E;
+            --shu-bright: #CB4C3D;
+            --kin: #C9A24E;
+            --kin-bright: #E0C285;
+            --ai: #37456A;
+            --ai-bright: #5C6FA0;
+            --washi: #EDE3D3;
+            --washi-muted: #A8987F;
+            --hairline: rgba(201, 162, 78, 0.28);
+        }
+
         body {
-            background-color: #FFF8E1; /* 明るいクリーム色の背景 */
-            color: #4E342E; /* 優しいブラウンのテキスト */
-            font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Quicksand", sans-serif;
+            background: radial-gradient(circle at 50% 15%, #241C15 0%, #15100C 65%, #0F0B08 100%);
+            color: var(--washi);
+            font-family: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
             text-align: center;
             margin: 0;
-            padding: 15px;
+            padding: 18px 15px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        h1 { 
-            color: #FF7043; 
-            font-size: 24px; 
-            margin: 5px 0 2px 0; 
-            text-shadow: 2px 2px 0px #FFE0B2;
-            font-weight: 900;
+        h1 {
+            font-family: "Shippori Mincho", serif;
+            font-size: 26px;
+            margin: 4px 0 2px 0;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(180deg, var(--kin-bright), var(--kin) 70%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
-        .subtitle { font-size: 12px; color: #8D6E63; margin-bottom: 15px; font-weight: bold; }
-        
-        .box { 
-            background: #FFFFFF; 
-            padding: 16px; 
-            border-radius: 20px; 
-            margin-bottom: 15px; 
-            font-size: 15px; 
-            width: 100%; 
-            max-width: 480px; 
-            box-shadow: 0 6px 15px rgba(255, 112, 67, 0.1);
-            border: 3px solid #FFE0B2;
-        }
-        
-        select, input, button {
-            font-size: 15px; 
-            padding: 8px 12px; 
-            background: #FFF; 
-            color: #4E342E;
-            border: 2px solid #FFCC80; 
-            border-radius: 10px; 
-            margin: 4px;
-            font-weight: bold;
-            outline: none;
-        }
-        input:focus { border-color: #FF7043; }
+        .subtitle { font-size: 11px; color: var(--washi-muted); margin-bottom: 18px; font-weight: 500; letter-spacing: 2px; }
 
-        .name-input-group { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; text-align: left; }
-        .name-input-item { display: flex; align-items: center; justify-content: space-between; font-weight: bold; }
-        .name-input-item input { width: 60%; }
-
-        /* 🍵 ポップなお茶碗・リアル3Dサイコロ表示エリア */
-        #bowl-container {
-            background: #FFFFFF;
-            border: 4px dashed #FFCC80;
-            border-radius: 24px;
-            padding: 15px;
+        .box {
+            background: var(--lacquer);
+            padding: 18px;
+            border-radius: 14px;
+            margin-bottom: 14px;
+            font-size: 15px;
             width: 100%;
             max-width: 480px;
-            margin-bottom: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+            border: 1px solid var(--hairline);
         }
-        #bowl-title { font-size: 16px; color: #FF7043; font-weight: 900; margin-bottom: 15px; min-height: 24px; }
-        
+
+        select, input, button {
+            font-size: 15px;
+            padding: 9px 12px;
+            background: var(--sumi);
+            color: var(--washi);
+            border: 1px solid #4A3D2A;
+            border-radius: 8px;
+            margin: 4px;
+            font-weight: 500;
+            outline: none;
+            font-family: inherit;
+        }
+        input:focus { border-color: var(--kin); }
+        button:focus-visible, input:focus-visible, select:focus-visible {
+            outline: 2px solid var(--ai-bright);
+            outline-offset: 2px;
+        }
+
+        .name-input-group { display: flex; flex-direction: column; gap: 10px; margin: 14px 0; text-align: left; }
+        .name-input-item { display: flex; align-items: center; justify-content: space-between; font-weight: 500; color: var(--washi-muted); font-size: 14px; }
+        .name-input-item input { width: 58%; color: var(--washi); }
+
+        /* 茶碗・サイコロ表示エリア */
+        #bowl-container {
+            background: repeating-linear-gradient(180deg, #1C1610 0px, #1C1610 2px, #1A1510 2px, #1A1510 4px);
+            border: 1.5px solid var(--hairline);
+            border-radius: 16px;
+            padding: 18px 15px;
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 14px;
+            position: relative;
+            overflow: visible;
+        }
+        #bowl-title { font-family: "Shippori Mincho", serif; font-size: 15px; color: var(--kin-bright); font-weight: 700; margin-bottom: 16px; min-height: 22px; letter-spacing: 0.5px; transition: color 0.2s; }
+        #bowl-title.bowl-title-win { color: var(--kin-bright); font-size: 16px; animation: bannerPop 0.5s ease; }
+        @keyframes bannerPop {
+            0% { transform: scale(0.85); opacity: 0; }
+            60% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
         #main-bowl {
-            /* 陶器のお茶碗風デザイン（外側は可愛いグリーン、中は白〜グレー） */
-            background: radial-gradient(circle, #FAFAFA 40%, #E0E0E0 90%, #BDBDBD 100%);
-            border: 14px solid #AED581; /* 抹茶カラーのフチ */
+            background: radial-gradient(circle, #2A2117 35%, #1C1610 85%, #120D09 100%);
+            border: 10px solid #A9814C;
             border-radius: 50%;
-            width: 230px;
-            height: 230px;
+            width: 220px;
+            height: 220px;
             margin: 0 auto;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 15px;
-            box-shadow: inset 0 8px 15px rgba(0,0,0,0.1), 0 10px 20px rgba(174, 213, 129, 0.4);
+            box-shadow: inset 0 10px 22px rgba(0,0,0,0.65), 0 0 0 3px rgba(201,162,78,0.12), 0 16px 32px rgba(178, 58, 46, 0.22);
             perspective: 400px;
+            position: relative;
         }
-        
-        /* リアルCSS 3Dダイス構造 */
+
         .dice-3d {
             width: 42px;
             height: 42px;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.5s ease-out;
+            transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        .shaking .dice-3d { transition: transform 0.1s linear; }
         .face {
             position: absolute;
             width: 42px;
             height: 42px;
-            background: #FFFAFA;
-            border: 2px solid #E0E0E0;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            font-weight: bold;
-            color: #333;
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+            background: #1F1A16;
+            border: 1.5px solid #6B5636;
+            border-radius: 6px;
+            box-shadow: inset 0 0 7px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(201,162,78,0.12);
         }
-        .f1 { transform: rotateY(0deg) translateZ(21px); color: #FF5252; font-size: 38px; }
+        .f1 { transform: rotateY(0deg) translateZ(21px); }
         .f6 { transform: rotateY(180deg) translateZ(21px); }
         .f2 { transform: rotateY(90deg) translateZ(21px); }
         .f5 { transform: rotateY(-90deg) translateZ(21px); }
         .f3 { transform: rotateX(90deg) translateZ(21px); }
         .f4 { transform: rotateX(-90deg) translateZ(21px); }
 
-        /* お椀の揺れ演出 */
+        .pip { position: absolute; width: 6.5px; height: 6.5px; background: var(--washi); border-radius: 50%; box-shadow: 0 0 3px rgba(237,227,211,0.5); }
+        .pip-red { background: var(--shu-bright); width: 10px; height: 10px; top: 16px; left: 16px; box-shadow: 0 0 5px rgba(203,76,61,0.7); }
+        .pip-tl { top: 6px; left: 6px; }
+        .pip-tr { top: 6px; right: 6px; }
+        .pip-ml { top: 17.5px; left: 6px; }
+        .pip-mr { top: 17.5px; right: 6px; }
+        .pip-center { top: 17.5px; left: 17.5px; }
+        .pip-bl { bottom: 6px; left: 6px; }
+        .pip-br { bottom: 6px; right: 6px; }
+
         .shaking { animation: shake 0.1s infinite alternate; }
         @keyframes shake {
             0% { transform: translate(4px, 2px) rotate(2deg); }
             100% { transform: translate(-4px, -2px) rotate(-2deg); }
         }
-        
-        /* ポップで押したくなる3Dボタン */
+
+        .karan-pop {
+            position: absolute;
+            top: 42%; left: 50%;
+            font-family: "Shippori Mincho", serif;
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--kin-bright);
+            text-shadow: 0 0 10px rgba(201,162,78,0.7), 0 2px 6px rgba(0,0,0,0.6);
+            pointer-events: none;
+            animation: karanFloat 0.8s ease-out forwards;
+            z-index: 6;
+            white-space: nowrap;
+        }
+        @keyframes karanFloat {
+            0% { opacity: 0; transform: translate(-50%, -40%) scale(0.5); }
+            30% { opacity: 1; transform: translate(-50%, -70%) scale(1.1); }
+            100% { opacity: 0; transform: translate(-50%, -120%) scale(1); }
+        }
+
+        /* 金粉のきらめき演出 */
+        .ember-piece {
+            position: absolute;
+            border-radius: 50%;
+            top: 50%; left: 50%;
+            pointer-events: none;
+            animation: emberFly 1.3s ease-out forwards;
+            z-index: 7;
+        }
+        @keyframes emberFly {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.3); opacity: 0; }
+        }
+
+        /* 落款（勝負の印） */
+        .hanko-stamp {
+            position: absolute;
+            top: 10px; right: 10px;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 3px solid var(--shu);
+            color: var(--shu-bright);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-family: "Shippori Mincho", serif;
+            font-size: 26px;
+            font-weight: 800;
+            transform: rotate(-10deg);
+            background: rgba(178,58,46,0.08);
+            z-index: 8;
+            pointer-events: none;
+        }
+        .hanko-stamp.show { display: flex; animation: stampDown 0.45s cubic-bezier(0.22, 0.9, 0.32, 1.2); }
+        @keyframes stampDown {
+            0% { opacity: 0; transform: rotate(-10deg) scale(2.4); }
+            55% { opacity: 1; transform: rotate(-10deg) scale(0.9); }
+            100% { opacity: 1; transform: rotate(-10deg) scale(1); }
+        }
+
         .btn-main {
-            background: #FF7043;
-            color: #ffffff;
-            border: none; 
-            padding: 16px 0; 
-            width: 90%; 
+            background: linear-gradient(180deg, var(--shu-bright), var(--shu));
+            color: var(--washi);
+            border: 1px solid rgba(224,194,133,0.35);
+            padding: 15px 0;
+            width: 90%;
             max-width: 320px;
-            font-size: 18px; 
-            font-weight: 900; 
-            border-radius: 50px; 
+            font-size: 16px;
+            font-family: "Shippori Mincho", serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 10px;
             cursor: pointer;
-            box-shadow: 0 6px 0 #D84315, 0 10px 15px rgba(216, 67, 21, 0.3); 
-            margin: 10px auto 15px auto;
-            display: block; 
+            box-shadow: 0 6px 16px rgba(178, 58, 46, 0.35);
+            margin: 12px auto 15px auto;
+            display: block;
             -webkit-tap-highlight-color: transparent;
-            transition: transform 0.1s, box-shadow 0.1s;
+            transition: transform 0.12s, box-shadow 0.12s, filter 0.12s;
         }
         .btn-main:active {
-            transform: translateY(6px);
-            box-shadow: 0 0 0 #D84315, 0 4px 5px rgba(216, 67, 21, 0.3);
+            transform: translateY(3px) scale(0.99);
+            box-shadow: 0 2px 8px rgba(178, 58, 46, 0.35);
+            filter: brightness(0.95);
         }
-        .btn-main:disabled { 
-            background: #E0E0E0; 
-            color: #9E9E9E; 
-            box-shadow: 0 6px 0 #BDBDBD; 
-            cursor: not-allowed; 
+        .btn-main:disabled {
+            background: #3A342C;
+            color: var(--washi-muted);
+            box-shadow: none;
+            cursor: not-allowed;
+            border-color: transparent;
         }
-        
-        .btn-nav { background: #81D4FA; color: #01579B; font-weight: bold; font-size: 13px; padding: 8px 16px; border: none; border-radius: 20px; margin: 5px; box-shadow: 0 3px 0 #29B6F6; }
-        .btn-nav:active { transform: translateY(3px); box-shadow: 0 0 0 #29B6F6; }
 
-        /* プレイヤーカード一覧 */
+        .btn-nav { background: transparent; color: var(--ai-bright); font-weight: 500; font-size: 13px; padding: 8px 16px; border: 1px solid var(--ai); border-radius: 8px; margin: 5px; }
+        .btn-nav:active { transform: translateY(2px); background: rgba(55,69,106,0.2); }
+
         .player-list { width: 100%; max-width: 480px; }
         .p-card {
-            background: #FFFFFF; 
-            padding: 14px; 
-            border-radius: 16px; 
+            background: var(--lacquer);
+            padding: 14px;
+            border-radius: 12px;
             margin: 10px 0;
-            border: 2px solid #EEEEEE;
-            border-left: 6px solid #BDBDBD; 
-            text-align: left; 
-            display: flex; 
-            justify-content: space-between; 
+            border: 1px solid var(--hairline);
+            border-left: 3px solid #4A3D2A;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+            transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
         }
-        .p-card.current-roller { border-left: 6px solid #FFCA28; background: #FFFDE7; border-color: #FFE082; box-shadow: 0 4px 10px rgba(255, 202, 40, 0.3); }
-        .p-card.win { border-left: 6px solid #66BB6A; background: #E8F5E9; border-color: #A5D6A7; }
-        .p-card.lose { border-left: 6px solid #EF5350; background: #FFEBEE; border-color: #EF9A9A; }
-        
+        .p-card.current-roller { border-left: 3px solid var(--kin); background: #2A2115; box-shadow: 0 0 16px rgba(201,162,78,0.22); }
+        .p-card.win { border-left: 3px solid var(--kin); background: #241D12; box-shadow: 0 0 18px rgba(201,162,78,0.28); animation: resultPop 0.5s ease; }
+        .p-card.lose { border-left: 3px solid var(--shu); background: #241512; box-shadow: 0 0 18px rgba(178,58,46,0.25); animation: resultPop 0.5s ease; }
+        @keyframes resultPop {
+            0% { transform: scale(0.94); opacity: 0.5; }
+            60% { transform: scale(1.015); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
         .p-info { flex: 1; }
-        .p-name { font-weight: 900; font-size: 16px; color: #4E342E; display: flex; align-items: center; gap: 6px; }
-        .p-money { font-size: 13px; color: #795548; margin-top: 4px; font-weight: bold; }
-        .p-status { font-size: 14px; font-weight: 900; color: #FF7043; margin-top: 4px; }
-        
-        /* 結果一覧の可愛いドットサイコロ */
+        .p-name { font-family: "Shippori Mincho", serif; font-weight: 700; font-size: 16px; color: var(--washi); display: flex; align-items: center; gap: 8px; }
+        .p-money { font-size: 12px; color: var(--washi-muted); margin-top: 5px; font-weight: 500; }
+        .p-status { font-size: 13px; font-weight: 700; color: var(--kin); margin-top: 4px; letter-spacing: 0.5px; }
+
         .p-dice-preview {
             display: flex;
             gap: 6px;
             align-items: center;
             justify-content: center;
-            background: #FFF3E0;
+            background: #1A1510;
             padding: 8px 10px;
-            border-radius: 12px;
+            border-radius: 10px;
             min-width: 100px;
-            border: 2px solid #FFE0B2;
+            border: 1px solid var(--hairline);
         }
         .mini-die-plate {
             width: 24px;
             height: 24px;
-            background: #ffffff;
-            border-radius: 5px;
+            background: #1F1A16;
+            border-radius: 4px;
             position: relative;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-            border: 1px solid #E0E0E0;
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.6);
+            border: 1px solid #4A3D2A;
         }
-        .dot { position: absolute; width: 4px; height: 4px; background: #4E342E; border-radius: 50%; }
-        .dot-center-red { position: absolute; width: 8px; height: 8px; background: #FF5252; border-radius: 50%; top: 7px; left: 7px; }
+        .dot { position: absolute; width: 3.5px; height: 3.5px; background: var(--washi); border-radius: 50%; }
+        .dot-center-red { position: absolute; width: 7px; height: 7px; background: var(--shu-bright); border-radius: 50%; top: 7.5px; left: 7.5px; }
         .top-left     { top: 4px; left: 4px; }
         .top-right    { top: 4px; right: 4px; }
-        .mid-left     { top: 9px; left: 4px; }
-        .center       { top: 9px; left: 9px; }
-        .mid-right    { top: 9px; right: 4px; }
+        .mid-left     { top: 9.5px; left: 4px; }
+        .center       { top: 9.5px; left: 9.5px; }
+        .mid-right    { top: 9.5px; right: 4px; }
         .bottom-left  { bottom: 4px; left: 4px; }
         .bottom-right { bottom: 4px; right: 4px; }
 
-        .mini-die-empty { color: #BCAAA4; font-size: 13px; font-weight: bold; letter-spacing: 1px; }
-        .badge { font-size: 11px; padding: 3px 6px; border-radius: 6px; font-weight: 900; }
-        .badge.win-badge { background: #66BB6A; color: white; }
-        .badge.lose-badge { background: #EF5350; color: white; }
-        
-        /* アコーディオンログ */
-        .accordion-btn { 
-            background: #FFE0B2; 
-            border: none; 
-            color: #D84315; 
-            width: 100%; 
-            padding: 12px; 
-            font-size: 14px; 
-            font-weight: 900; 
-            cursor: pointer; 
-            border-radius: 12px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+        .mini-die-empty { color: #5C4E38; font-size: 13px; font-weight: bold; letter-spacing: 1px; }
+        .badge { font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 800; letter-spacing: 1px; font-family: "Zen Kaku Gothic New", sans-serif; }
+        .badge.win-badge { background: var(--kin); color: #1A1512; }
+        .badge.lose-badge { background: var(--shu); color: var(--washi); }
+
+        .accordion-btn {
+            background: var(--lacquer-light);
+            border: 1px solid var(--hairline);
+            color: var(--kin-bright);
+            width: 100%;
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: inherit;
         }
-        .log-box { font-size: 13px; color: #5D4037; font-weight: bold; max-height: 150px; overflow-y: auto; text-align: left; padding: 12px; background: #FFF; border-radius: 0 0 12px 12px; display: none; border-top: 2px dashed #FFE0B2; line-height: 1.5; }
+        .log-box { font-size: 12.5px; color: var(--washi-muted); font-weight: 500; max-height: 150px; overflow-y: auto; text-align: left; padding: 12px; background: var(--sumi); border-radius: 0 0 10px 10px; display: none; border: 1px solid var(--hairline); border-top: none; line-height: 1.6; }
+        .log-box b { color: var(--washi); }
+
+        .safety-note { font-size: 11px; color: var(--washi-muted); margin-top: 6px; margin-bottom: 10px; max-width: 480px; line-height: 1.6; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .shaking, .ember-piece, .karan-pop, .p-card.win, .p-card.lose, #bowl-title.bowl-title-win, .hanko-stamp.show {
+                animation: none !important;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <h1>🍵 お茶碗チンチロ 🎲</h1>
-    <div class="subtitle">Presented by Syunki.Jr</div>
+    <h1>お茶碗チンチロ</h1>
+    <div class="subtitle">大人のカラカラ版</div>
 
     <!-- 設定エリア -->
     <div id="setup-area" class="box">
-        <div style="font-weight: 900; color: #FF7043; margin-bottom: 10px; font-size:16px;">
-            🍻 参加人数をえらんでね！
+        <div style="font-family:'Shippori Mincho',serif; font-weight: 700; color: var(--kin-bright); margin-bottom: 12px; font-size:16px;">
+            何人で勝負する？
         </div>
         <div>
             参加人数:
@@ -248,33 +365,49 @@
             </select>
         </div>
         <div class="name-input-group" id="name-inputs-container"></div>
-        <button onclick="initGame()" class="btn-main" style="width:100%; margin-top:15px;">ゲームをはじめる！</button>
-        <button onclick="resetData()" style="background:#EEEEEE; color:#757575; border:none; box-shadow:0 3px 0 #BDBDBD; font-size:12px; width:100%; margin-top:10px; border-radius:20px;">これまでの飲酒量をリセット</button>
+        <button onclick="initGame()" class="btn-main" style="width:100%; margin-top:15px;">勝負を始める</button>
+        <button onclick="resetData()" style="background:transparent; color:var(--washi-muted); border:1px solid #3A2F22; box-shadow:none; font-size:12px; width:100%; margin-top:10px; border-radius:8px; font-family:inherit; font-weight:400;">これまでの記録をリセット</button>
     </div>
 
     <!-- ナビゲーションエリア -->
     <div id="nav-area" style="display:none; width:100%; max-width:480px; text-align:right;">
-        <button class="btn-nav" onclick="confirmGoToTop()">🏠 もどる</button>
+        <button class="btn-nav" onclick="confirmGoToTop()">トップに戻る</button>
     </div>
 
     <!-- ステータス・BETエリア -->
     <div id="game-status" class="box" style="display:none;">
-        <span id="round-title" style="font-weight:900; color:#FF7043; font-size:16px;"></span>
-        <div id="bet-inputs" style="margin-top: 10px; font-weight:bold;"></div>
+        <span id="round-title" style="font-family:'Shippori Mincho',serif; font-weight:700; color: var(--kin-bright); font-size:16px;"></span>
+        <div id="bet-inputs" style="margin-top: 10px; font-weight:500;"></div>
     </div>
 
     <!-- 大画面お茶碗サイコロエリア -->
     <div id="bowl-container" style="display:none;">
-        <div id="bowl-title">準備ができたら振ってね！</div>
+        <div id="hanko-stamp" class="hanko-stamp">勝</div>
+        <div id="bowl-title">準備ができたら振ってね</div>
         <div id="main-bowl">
             <div class="dice-3d" id="d3d1">
-                <div class="face f1">・</div><div class="face f6">⚅</div><div class="face f2">⚁</div><div class="face f5">⚄</div><div class="face f3">⚂</div><div class="face f4">⚃</div>
+                <div class="face f1"><div class="pip pip-red"></div></div>
+                <div class="face f6"><div class="pip pip-tl"></div><div class="pip pip-tr"></div><div class="pip pip-ml"></div><div class="pip pip-mr"></div><div class="pip pip-bl"></div><div class="pip pip-br"></div></div>
+                <div class="face f2"><div class="pip pip-tl"></div><div class="pip pip-br"></div></div>
+                <div class="face f5"><div class="pip pip-tl"></div><div class="pip pip-tr"></div><div class="pip pip-center"></div><div class="pip pip-bl"></div><div class="pip pip-br"></div></div>
+                <div class="face f3"><div class="pip pip-tl"></div><div class="pip pip-center"></div><div class="pip pip-br"></div></div>
+                <div class="face f4"><div class="pip pip-tl"></div><div class="pip pip-tr"></div><div class="pip pip-bl"></div><div class="pip pip-br"></div></div>
             </div>
             <div class="dice-3d" id="d3d2">
-                <div class="face f1">・</div><div class="face f6">⚅</div><div class="face f2">⚁</div><div class="face f5">⚄</div><div class="face f3">⚂</div><div class="face f4">⚃</div>
+                <div class="face f1"><div class="pip pip-red"></div></div>
+                <div class="face f6"><div class="pip pip-tl"></div><div class="pip pip-tr"></div><div class="pip pip-ml"></div><div class="pip pip-mr"></div><div class="pip pip-bl"></div><div class="pip pip-br"></div></div>
+                <div class="face f2"><div class="pip pip-tl"></div><div class="pip pip-br"></div></div>
+                <div class="face f5"><div class="pip pip-tl"></div><div class="pip pip-tr"></div><div class="pip pip-center"></div><div class="pip pip-bl"></div><div class="pip pip-br"></div></div>
+                <div class="face f3"><div class="pip pip-tl"></div><div class="pip pip-center"></div><div class="pip pip-br"></div></div>
+                <div class="face f4"><div class="pip pip-tl"></div><div class="pip pip-tr"></div><div class="pip pip-bl"></div><div class="pip pip-br"></div></div>
             </div>
             <div class="dice-3d" id="d3d3">
-                <div class="face f1">・</div><div class="face f6">⚅</div><div class="face f2">⚁</div><div class="face f5">⚄</div><div class="face f3">⚂</div><div class="face f4">⚃</div>
+                <div class="face f1"><div class="pip pip-red"></div></div>
+                <div class="face f6"><div class="pip pip-tl"></div><div class="pip pip-tr"></div><div class="pip pip-ml"></div><div class="pip pip-mr"></div><div class="pip pip-bl"></div><div class="pip pip-br"></div></div>
+                <div class="face f2"><div class="pip pip-tl"></div><div class="pip pip-br"></div></div>
+                <div class="face f5"><div class="pip pip-tl"></div><div class="pip pip-tr"></div><div class="pip pip-center"></div><div class="pip pip-bl"></div><div class="pip pip-br"></div></div>
+                <div class="face f3"><div class="pip pip-tl"></div><div class="pip pip-center"></div><div class="pip pip-br"></div></div>
+                <div class="face f4"><div class="pip pip-tl"></div><div class="pip pip-tr"></div><div class="pip pip-bl"></div><div class="pip pip-br"></div></div>
             </div>
         </div>
     </div>
@@ -286,13 +419,15 @@
     <div class="player-list" id="players-display"></div>
 
     <!-- 可変ログエリア -->
-    <div class="box" id="log-area" style="display:none; padding:0; border:none; box-shadow:none;">
+    <div class="box" id="log-area" style="display:none; padding:0; border:none; box-shadow:none; background:transparent;">
         <button class="accordion-btn" onclick="toggleLog()">
-            <span>📜 勝負のきろく (タップでひらく)</span>
+            <span>対戦記録（タップで開閉）</span>
             <span id="accordion-arrow">▼</span>
         </button>
         <div id="logs" class="log-box"></div>
     </div>
+
+    <div class="safety-note">お酒が苦手な方はお茶や水に変えてもOKです。無理のない範囲で楽しんでください。</div>
 
     <script>
         const rotateAngles = {
@@ -307,8 +442,68 @@
         let currentPlayerTurn = 0;
         let isRolling = false;
         let logOpen = false;
+        let drinkTotals = {};
 
         let audioCtx = null;
+
+        // Claude.aiのアーティファクト永続ストレージ（window.storage）が使えればそれを、
+        // 使えない環境（ローカル保存したHTMLを直接開いた場合など）ではメモリ内保存にフォールバック
+        const hasCloudStorage = (typeof window.storage !== "undefined") && !!window.storage;
+        let memoryStore = {};
+
+        async function storageGet(key) {
+            if (hasCloudStorage) {
+                try {
+                    const res = await window.storage.get(key, false);
+                    return res ? res.value : null;
+                } catch (e) {
+                    return null;
+                }
+            }
+            return memoryStore.hasOwnProperty(key) ? memoryStore[key] : null;
+        }
+
+        async function storageSet(key, value) {
+            if (hasCloudStorage) {
+                try {
+                    await window.storage.set(key, value, false);
+                } catch (e) {
+                    console.error("Storage error:", e);
+                }
+            } else {
+                memoryStore[key] = value;
+            }
+        }
+
+        async function storageDelete(key) {
+            if (hasCloudStorage) {
+                try {
+                    await window.storage.delete(key, false);
+                } catch (e) {
+                    console.error("Storage error:", e);
+                }
+            } else {
+                delete memoryStore[key];
+            }
+        }
+
+        async function loadDrinkTotals() {
+            const raw = await storageGet("chinchiro-drink-totals");
+            if (raw) {
+                try {
+                    drinkTotals = JSON.parse(raw);
+                } catch (e) {
+                    drinkTotals = {};
+                }
+            } else {
+                drinkTotals = {};
+            }
+        }
+
+        async function saveDrinkTotals() {
+            players.forEach(p => { drinkTotals[p.name] = p.money; });
+            await storageSet("chinchiro-drink-totals", JSON.stringify(drinkTotals));
+        }
 
         function initAudio() {
             if (!audioCtx) {
@@ -322,50 +517,47 @@
         window.addEventListener('click', initAudio, { once: true });
         window.addEventListener('touchstart', initAudio, { once: true });
 
-        // 🍵 お茶碗の中で「カランッ！」と鳴る音響
-function playDiceSound() {
-    if (!audioCtx) return;
-    try {
-        initAudio();
-        // 3回ランダムに音を重ねることで、サイコロが跳ねる「カランカラン」感を演出
-        for(let i=0; i<3; i++) {
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            
-            // 周波数を高め（1800Hz〜2500Hz）にして、金属や陶器っぽい高い音に設定
-            osc.type = 'sine'; 
-            osc.frequency.setValueAtTime(1800 + Math.random() * 700, audioCtx.currentTime + (i*0.06));
-            
-            // 余韻を短く鋭くすることで「乾いた音」を作る
-            gain.gain.setValueAtTime(0.4, audioCtx.currentTime + (i*0.06));
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (i*0.06) + 0.04);
-            
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(audioCtx.currentTime + (i*0.06));
-            osc.stop(audioCtx.currentTime + (i*0.06) + 0.05);
+        // お茶碗の中で鳴る「カラカラッ」という音
+        function playDiceSound() {
+            if (!audioCtx) return;
+            try {
+                initAudio();
+                for(let i=0; i<2; i++) {
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1200 + Math.random() * 800, audioCtx.currentTime + (i*0.03));
+                    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + (i*0.03) + 0.03);
+
+                    gain.gain.setValueAtTime(0.5, audioCtx.currentTime + (i*0.03));
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + (i*0.03) + 0.03);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + (i*0.03));
+                    osc.stop(audioCtx.currentTime + (i*0.03) + 0.04);
+                }
+            } catch(e) {}
         }
-    } catch(e) {}
-}
 
-
-        // 🎉 ポップなファンファーレ
+        // 勝負が決まった時の落ち着いた和音
         function playFanfareBGM() {
             if (!audioCtx) return;
             try {
                 initAudio();
                 let now = audioCtx.currentTime;
-                let notes = [523.25, 659.25, 783.99, 1046.50];
+                let notes = [392.00, 493.88, 587.33, 783.99];
                 notes.forEach((freq, index) => {
                     let osc = audioCtx.createOscillator();
                     let gain = audioCtx.createGain();
-                    
+
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(freq, now + (index * 0.12));
-                    
-                    gain.gain.setValueAtTime(0.3, now + (index * 0.12));
+
+                    gain.gain.setValueAtTime(0.28, now + (index * 0.12));
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6 + (index * 0.12));
-                    
+
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
                     osc.start(now + (index * 0.12));
@@ -383,57 +575,72 @@ function playDiceSound() {
             for(let i = 1; i <= n; i++) {
                 html += `
                     <div class="name-input-item">
-                        <span>プレイヤー ${i} のなまえ:</span>
+                        <span>プレイヤー ${i}:</span>
                         <input type="text" id="pname-${i}" value="プレイヤー ${i}" maxlength="8">
                     </div>`;
             }
             container.innerHTML = html;
         }
 
-        function initGame() {
-            initAudio(); 
+        async function initGame() {
+            initAudio();
             numPlayers = +document.getElementById('player-num').value;
+
+            const startBtn = document.querySelector('#setup-area .btn-main');
+            const originalLabel = startBtn.innerText;
+            startBtn.disabled = true;
+            startBtn.innerText = "読み込み中…";
+
+            await loadDrinkTotals();
+
             players = [];
-            
+            let usedNames = new Set();
+
             for (let i = 1; i <= numPlayers; i++) {
                 let inputName = document.getElementById(`pname-${i}`).value.trim() || `プレイヤー ${i}`;
-                let savedMoney = localStorage.getItem(`chinchiro_pop_p_${inputName}`);
+                let uniqueName = inputName;
+                let suffix = 2;
+                while (usedNames.has(uniqueName)) {
+                    uniqueName = `${inputName}(${suffix})`;
+                    suffix++;
+                }
+                usedNames.add(uniqueName);
+
                 players.push({
                     id: i,
-                    name: inputName,
-                    money: savedMoney !== null ? +savedMoney : 0,
+                    name: uniqueName,
+                    money: drinkTotals[uniqueName] || 0,
                     dice: [1, 1, 1],
                     role: null,
                     rollCount: 0,
                     outcome: ""
                 });
             }
-            
+
+            startBtn.disabled = false;
+            startBtn.innerText = originalLabel;
+
             document.getElementById('setup-area').style.display = 'none';
             document.getElementById('nav-area').style.display = 'block';
             document.getElementById('game-status').style.display = 'block';
             document.getElementById('bowl-container').style.display = 'block';
             document.getElementById('action-btn').style.display = 'block';
             document.getElementById('log-area').style.display = 'block';
-            
-            addLog("🎊 お茶碗チンチロがはじまったよ！");
+
+            addLog("茶碗チンチロ、開始。");
             startBetting();
         }
 
-        function saveMoney() {
-            players.forEach(p => localStorage.setItem(`chinchiro_pop_p_${p.name}`, p.money));
-        }
-
-        function resetData() {
-            if(confirm("みんなの飲んだ量を「0杯」にリセットする？")) {
-                localStorage.clear();
-                alert("リセットしたよ！");
+        async function resetData() {
+            if(confirm("全員の記録を0杯にリセットしますか？")) {
+                await storageDelete("chinchiro-drink-totals");
+                alert("リセットしました");
                 location.reload();
             }
         }
 
         function confirmGoToTop() {
-            if(confirm("最初の画面にもどる？\n(いまの勝負はリセットされます)")) {
+            if(confirm("トップ画面に戻りますか？\n（進行中の勝負はリセットされます）")) {
                 location.reload();
             }
         }
@@ -460,7 +667,7 @@ function playDiceSound() {
                     let ry = Math.floor(Math.random()*4)*90;
                     document.getElementById(`d3d${i}`).style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
                 }
-                playDiceSound(); 
+                playDiceSound();
             } else {
                 b.classList.remove('shaking');
                 for(let i=1; i<=3; i++) {
@@ -473,32 +680,64 @@ function playDiceSound() {
             }
         }
 
+        function showKaran() {
+            const container = document.getElementById('bowl-container');
+            const texts = ["カランッ", "コロコロン", "カラカラッ"];
+            const el = document.createElement('div');
+            el.className = 'karan-pop';
+            el.innerText = texts[Math.floor(Math.random() * texts.length)];
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 850);
+        }
+
+        function burstEmbers() {
+            const container = document.getElementById('bowl-container');
+            const colors = ['#C9A24E', '#E0C285', '#B8925A', '#CB4C3D'];
+            for (let i = 0; i < 20; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'ember-piece';
+                const size = 4 + Math.random() * 3;
+                piece.style.width = `${size}px`;
+                piece.style.height = `${size}px`;
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 70 + Math.random() * 100;
+                piece.style.setProperty('--dx', `${Math.cos(angle) * dist}px`);
+                piece.style.setProperty('--dy', `${Math.sin(angle) * dist - 30}px`);
+                piece.style.animationDelay = `${Math.random() * 0.15}s`;
+                container.appendChild(piece);
+                setTimeout(() => piece.remove(), 1500);
+            }
+        }
+
         function startBetting() {
             gameState = "BETTING";
-            document.getElementById('round-title').innerText = `💰 ベットする杯数をきめてね`;
-            document.getElementById('bowl-title').innerText = "この勝負のベースになる杯数を入力してね！";
-            document.getElementById('action-btn').innerText = "杯数をきめて勝負スタート！";
-            
+            document.getElementById('round-title').innerText = `賭け杯数を決める`;
+            document.getElementById('bowl-title').innerText = "この一局の基本杯数を入力してね";
+            document.getElementById('bowl-title').classList.remove('bowl-title-win');
+            document.getElementById('hanko-stamp').classList.remove('show');
+            document.getElementById('hanko-stamp').style.display = 'none';
+            document.getElementById('action-btn').innerText = "杯数を決めて勝負開始";
+
             document.getElementById('bet-inputs').innerHTML = `
                 <span>この勝負のかけ金: </span>
-                <input type="number" id="global-bet-input" value="1" min="1" max="5" style="width:60px;"> 杯
+                <input type="number" id="global-bet-input" value="1" min="1" max="5" inputmode="numeric" style="width:60px;"> 杯
             `;
-            
+
             players.forEach(p => { p.role = null; p.rollCount = 0; p.outcome = ""; });
             updateMainBowl3D([1,1,1]);
             renderPlayers();
         }
 
         function lockBetting() {
-            initAudio(); 
-            let inputVal = +document.getElementById('global-bet-input').value;
-            if(inputVal < 1) {
-                alert("杯数は1杯以上にしてね！");
-                return;
-            }
+            initAudio();
+            let raw = document.getElementById('global-bet-input').value;
+            let inputVal = parseInt(raw, 10);
+            if (isNaN(inputVal) || inputVal < 1) inputVal = 1;
+            if (inputVal > 5) inputVal = 5;
             globalBet = inputVal;
             document.getElementById('bet-inputs').innerHTML = "";
-            
+
             currentPlayerTurn = 0;
             setupNextRoller();
         }
@@ -506,11 +745,11 @@ function playDiceSound() {
         function setupNextRoller() {
             gameState = "ROLLING_PLAYERS";
             let p = players[currentPlayerTurn];
-            
-            document.getElementById('round-title').innerText = `🎲 ${p.name} のばんだよ！`;
-            document.getElementById('bowl-title').innerText = `${p.name} のちょうせん (のこり ${3 - p.rollCount} 回)`;
-            document.getElementById('action-btn').innerText = `お茶碗を振る！ (${p.rollCount + 1}回目)`;
-            
+
+            document.getElementById('round-title').innerText = `${p.name} の番`;
+            document.getElementById('bowl-title').innerText = `${p.name} の挑戦（残り ${3 - p.rollCount} 回）`;
+            document.getElementById('action-btn').innerText = `振る（${p.rollCount + 1}回目）`;
+
             renderPlayers();
         }
 
@@ -529,19 +768,20 @@ function playDiceSound() {
 
                 if(ticks > 25) {
                     clearInterval(interval);
-                    
+
                     let d = [Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1];
                     p.dice = d;
                     p.role = judgeChinchiro(d);
-                    
+
                     updateMainBowl3D(d, false);
-                    
+                    showKaran();
+
                     if (p.role.t !== "役なし" || p.rollCount >= 3) {
-                        addLog(`✨ ${p.name}: ${p.rollCount}回目で【${p.role.t}】になったよ！`);
+                        addLog(`${p.name}：${p.rollCount}回目で【${p.role.t}】`);
                         moveToNextPlayer();
                     } else {
-                        document.getElementById('bowl-title').innerText = `役なし！もういっかい！ (のこり ${3 - p.rollCount} 回)`;
-                        document.getElementById('action-btn').innerText = `もう１回振る！ (${p.rollCount + 1}回目)`;
+                        document.getElementById('bowl-title').innerText = `役なし。もう一度（残り ${3 - p.rollCount} 回）`;
+                        document.getElementById('action-btn').innerText = `もう一度振る（${p.rollCount + 1}回目）`;
                         document.getElementById('action-btn').disabled = false;
                         isRolling = false;
                         renderPlayers();
@@ -553,11 +793,11 @@ function playDiceSound() {
         function moveToNextPlayer() {
             currentPlayerTurn++;
             let allDone = players.every(p => p.role !== null);
-            
+
             setTimeout(() => {
                 isRolling = false;
                 document.getElementById('action-btn').disabled = false;
-                
+
                 if (allDone) {
                     gameState = "RESULT";
                     calcPayout();
@@ -567,13 +807,13 @@ function playDiceSound() {
             }, 1200);
         }
 
-        function calcPayout() {
-            document.getElementById('round-title').innerText = "🏆 けっかはっぴょう！";
-            document.getElementById('action-btn').innerText = "つぎの勝負へいく！";
-            
+        async function calcPayout() {
+            document.getElementById('round-title').innerText = "結果発表";
+            document.getElementById('action-btn').innerText = "次の勝負へ";
+
             let maxScore = -Infinity;
             let minScore = Infinity;
-            
+
             players.forEach(p => {
                 if (p.role.r > maxScore) maxScore = p.role.r;
                 if (p.role.r < minScore) minScore = p.role.r;
@@ -593,20 +833,27 @@ function playDiceSound() {
                 }
             });
 
-            let logMsg = `<hr style="border:1px dashed #FFCC80;"><span style="color:#FF7043; font-size:14px;">🎯 精算けっか</span><br>`;
+            const bowlTitleEl = document.getElementById('bowl-title');
+            let logMsg = `<hr style="border:none; border-top:1px dashed #4A3D2A; margin: 6px 0;"><span style="color:var(--kin-bright); font-size:13px; font-weight:700;">精算結果</span><br>`;
 
             if (isDrawAll) {
-                logMsg += `みんな同じ強さだから、引き分け！平和だね🕊️<br>`;
-                document.getElementById('bowl-title').innerText = `みんな引き分け！`;
+                logMsg += `全員同じ強さ。今回は引き分け<br>`;
+                bowlTitleEl.innerText = `引き分け`;
             } else {
-                playFanfareBGM(); 
-                
-                let winnerNames = winners.map(w => w.name).join(", ");
-                let loserNames = losers.map(l => l.name).join(", ");
-                document.getElementById('bowl-title').innerText = `👑 勝者: ${winnerNames} / 💀 敗者: ${loserNames}`;
+                playFanfareBGM();
+                bowlTitleEl.classList.add('bowl-title-win');
+                burstEmbers();
+                const stamp = document.getElementById('hanko-stamp');
+                stamp.classList.remove('show');
+                void stamp.offsetWidth;
+                stamp.classList.add('show');
 
-                logMsg += `🎉 勝った人：<b>${winnerNames}</b><br>`;
-                logMsg += `💀 負けた人：<b>${loserNames}</b><br><br>`;
+                let winnerNames = winners.map(w => w.name).join("、");
+                let loserNames = losers.map(l => l.name).join("、");
+                bowlTitleEl.innerText = `勝者：${winnerNames} ／ 敗者：${loserNames}`;
+
+                logMsg += `勝者：<b>${winnerNames}</b><br>`;
+                logMsg += `敗者：<b>${loserNames}</b><br><br>`;
 
                 let winnerBaseMultiplier = 0;
                 let hasValidWinnerRole = false;
@@ -614,32 +861,32 @@ function playDiceSound() {
                 players.forEach(p => {
                     if (p.role.r >= 90) {
                         winnerBaseMultiplier += p.role.mult;
-                        logMsg += `🔸 ${p.name} の役: ${p.role.t} ➡️ <b>+${p.role.mult}倍</b><br>`;
+                        logMsg += `${p.name} の役: ${p.role.t} ➡️ <b>+${p.role.mult}倍</b><br>`;
                         hasValidWinnerRole = true;
                     }
                 });
 
                 if (!hasValidWinnerRole) {
                     winnerBaseMultiplier = 1;
-                    logMsg += `🔸 シゴロ以上がいなかったから ベース <b>1倍</b><br>`;
+                    logMsg += `シゴロ以上がいなかったから ベース <b>1倍</b><br>`;
                 }
 
                 let subTotalCups = globalBet * winnerBaseMultiplier;
-                logMsg += `<br>💰 勝者の合計: ${globalBet}杯 × ${winnerBaseMultiplier}倍 ＝ <b>${subTotalCups}杯</b><br>`;
+                logMsg += `<br>勝者の合計: ${globalBet}杯 × ${winnerBaseMultiplier}倍 ＝ <b>${subTotalCups}杯</b><br>`;
 
                 losers.forEach(loser => {
                     let finalDrinkAmt = subTotalCups * loser.role.mult;
-                    
-                    logMsg += `💥 負けた <b>${loser.name}</b> の役ペナルティ: 【${loser.role.t}】(✖️ <b>${loser.role.mult}倍</b>)<br>`;
-                    logMsg += `➡️ けいさん: ${subTotalCups}杯 × ${loser.role.mult}倍 ➡️ <b style="color:#EF5350; font-size:15px;">${finalDrinkAmt}杯</b><br>`;
+
+                    logMsg += `${loser.name} の役ペナルティ: 【${loser.role.t}】(✖️ <b>${loser.role.mult}倍</b>)<br>`;
+                    logMsg += `➡️ ${subTotalCups}杯 × ${loser.role.mult}倍 ➡️ <b style="color:var(--shu-bright); font-size:14px;">${finalDrinkAmt}杯</b><br>`;
 
                     loser.money += finalDrinkAmt;
-                    logMsg += `😭 <b>${loser.name}</b> は <b>${finalDrinkAmt} 杯</b> 飲んでね！<br>`;
+                    logMsg += `<b>${loser.name}</b>：${finalDrinkAmt} 杯<br>`;
                 });
             }
 
             addLog(logMsg);
-            saveMoney();
+            await saveDrinkTotals();
             renderPlayers();
         }
 
@@ -657,14 +904,14 @@ function playDiceSound() {
             if (val === 4) dots = '<div class="dot top-left"></div><div class="dot top-right"></div><div class="dot bottom-left"></div><div class="dot bottom-right"></div>';
             if (val === 5) dots = '<div class="dot top-left"></div><div class="dot top-right"></div><div class="dot center"></div><div class="dot bottom-left"></div><div class="dot bottom-right"></div>';
             if (val === 6) dots = '<div class="dot top-left"></div><div class="dot top-right"></div><div class="dot mid-left"></div><div class="dot mid-right"></div><div class="dot bottom-left"></div><div class="dot bottom-right"></div>';
-            
+
             return `<div class="mini-die-plate">${dots}</div>`;
         }
 
         function renderPlayers() {
             const display = document.getElementById('players-display');
             let html = "";
-            
+
             players.forEach((p, idx) => {
                 let cardClass = "p-card";
                 let badge = "";
@@ -674,12 +921,12 @@ function playDiceSound() {
                 }
 
                 if (gameState === "RESULT") {
-                    if (p.outcome === "WIN") { cardClass += " win"; badge = `<span class="badge win-badge">👑 WIN</span>`; }
-                    if (p.outcome === "LOSE") { cardClass += " lose"; badge = `<span class="badge lose-badge">💀 LOSE</span>`; }
+                    if (p.outcome === "WIN") { cardClass += " win"; badge = `<span class="badge win-badge">WIN</span>`; }
+                    if (p.outcome === "LOSE") { cardClass += " lose"; badge = `<span class="badge lose-badge">LOSE</span>`; }
                 }
 
-                let statusStr = "まっててね";
-                if (gameState === "ROLLING_PLAYERS" && idx === currentPlayerTurn) statusStr = "🎲 きみのばんだよ！";
+                let statusStr = "待機中";
+                if (gameState === "ROLLING_PLAYERS" && idx === currentPlayerTurn) statusStr = "挑戦中";
                 else if (p.role) statusStr = `【 ${p.role.t} 】 (${p.rollCount}回目)`;
                 else if (p.rollCount > 0) statusStr = `${p.rollCount}回目 目なし`;
 
@@ -694,7 +941,7 @@ function playDiceSound() {
                     <div class="${cardClass}">
                         <div class="p-info">
                             <div class="p-name">${p.name} ${badge}</div>
-                            <div class="p-money">これまで飲んだ量: <b style="color:#FF7043; font-size:16px;">${p.money}</b> 杯</div>
+                            <div class="p-money">通算 <b style="color:var(--kin-bright); font-size:15px;">${p.money}</b> 杯</div>
                             <div class="p-status">${statusStr}</div>
                         </div>
                         <div class="p-dice-preview">${dicePreviewHtml}</div>
@@ -708,12 +955,12 @@ function playDiceSound() {
             a.forEach(x => c[x] = (c[x] || 0) + 1);
             const v = Object.values(c);
             const s = [...a].sort((x, y) => x - y);
-            
+
             if (a[0] === 1 && a[1] === 1 && a[2] === 1) return { r: 500, t: "ピンゾロ", mult: 5 };
             if (v.includes(3)) return { r: 100 + a[0], t: a[0] + "のアラシ", mult: 3 };
             if ("" + s === "4,5,6") return { r: 90, t: "シゴロ", mult: 2 };
             if ("" + s === "1,2,3") return { r: -1, t: "ヒフミ", mult: 2 };
-            
+
             if (v.includes(2)) {
                 let e;
                 for (let k in c) { if (c[k] == 1) e = +k; }
