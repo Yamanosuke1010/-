@@ -350,8 +350,8 @@
 </head>
 <body>
 
-    <h1>お茶碗チンチロ</h1>
-    <div class="subtitle">大人のカラカラ版</div>
+    <h1>チンチロ</h1>
+    <div class="subtitle">飲みゲーム用</div>
 
     <!-- 設定エリア -->
     <div id="setup-area" class="box">
@@ -627,7 +627,7 @@
             document.getElementById('action-btn').style.display = 'block';
             document.getElementById('log-area').style.display = 'block';
 
-            addLog("茶碗チンチロ、開始。");
+            addLog("チンチロ、開始。");
             startBetting();
         }
 
@@ -682,7 +682,7 @@
 
         function showKaran() {
             const container = document.getElementById('bowl-container');
-            const texts = ["カランッ", "コロコロン", "カラカラッ"];
+            const texts = ["わお！", "え！？", "まじ！？"];
             const el = document.createElement('div');
             el.className = 'karan-pop';
             el.innerText = texts[Math.floor(Math.random() * texts.length)];
